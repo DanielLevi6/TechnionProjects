@@ -72,4 +72,8 @@ double productGetPricePerUnit(Product product);
 
 double productGetTotalIncomes(Product product);
 
+ProductAmountType productGetAmountType(Product product);
+
+void productSetAmount(Product new_product, double amount);
+
 #endif //MATAMIKYA_PRODUCT_H

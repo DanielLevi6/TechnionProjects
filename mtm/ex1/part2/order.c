@@ -121,6 +121,24 @@ double calcPrice(Order order) {
     return price;
 }
 
+OrderResult orderAddProduct(Order order, Product product, double amount)
+{
+    if(!order)
+    {
+        return ORDER_NULL_ARGUMENT;
+    }
+    if(amount<0)
+    {
+        return ORDER_INVALID_AMOUNT;
+    }
+    Product new_product=productCopy(product);
+    productSetAmount(new_product, amount);
+
+    asRegister(order->products,new_product);
+
+    return ORDER_SUCCESS;
+}
+
 AmountSet orderGetProducts(Order order) {
     return order->products;
 }

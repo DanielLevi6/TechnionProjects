@@ -32,7 +32,7 @@ Product productCreate(const char* name, unsigned int id, ProductData data, Produ
         return NULL;
     }
 
-    new_product->name=malloc(sizeof(name));
+    new_product->name=malloc(sizeof(*name)+1);
     if(!new_product->name)
     {
         free(new_product);
@@ -48,14 +48,15 @@ Product productCreate(const char* name, unsigned int id, ProductData data, Produ
     }
 
     new_product->id=id;
-    new_product->data=malloc(sizeof(data));
-    memcpy(new_product->data,data,sizeof(data));
     new_product->amount_type=amount_type;
     new_product->amount=amount;
     new_product->total_incomes=total_incomes;
     new_product->copyData=copyData;
     new_product->freeData=freeData;
     new_product->prodPrice=prodPrice;
+
+    //new_product->data=malloc(sizeof(data));
+    new_product->data=copyData(data);
 
     return new_product;
 }
@@ -68,7 +69,7 @@ ASElement productCopy(ASElement product)
         return NULL;
     }
 
-    char* new_name=malloc(sizeof(((Product)product)->name));
+    char* new_name=malloc(sizeof(*(((Product)product)->name))+1);
     if(!new_name)
     {
         return NULL;
@@ -147,7 +148,7 @@ ProductResult addProductAmount(Product product, const double amount)
 
     if(product->amount+amount < 0)
     {
-        return PRODUCT_INVALID_AMOUNT;
+        return PRODUCT_INSUFFICIENT_AMOUNT;
     }
 
     product->amount+=amount;
@@ -209,4 +210,18 @@ double productGetPricePerUnit(Product product) {
 
 double productGetTotalIncomes(Product product) {
     return product->total_incomes;
+}
+
+ProductAmountType productGetAmountType(Product product) {
+    return product->amount_type;
+}
+
+void productSetAmount(Product new_product, double amount)
+{
+    if(!new_product)
+    {
+        return;
+    }
+
+    new_product->amount=amount;
 }

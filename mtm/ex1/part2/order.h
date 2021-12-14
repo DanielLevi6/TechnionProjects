@@ -37,6 +37,8 @@ Product getNextProductInOrder(Order order);
 
 double calcPrice(Order order);
 
+OrderResult orderAddProduct(Order order, Product product, double amount);
+
 AmountSet orderGetProducts(Order order);
 
 #endif //MATAMIKYA_ORDER_H
