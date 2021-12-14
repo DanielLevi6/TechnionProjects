@@ -11,10 +11,15 @@ struct Product_t {
     ProductAmountType amount_type;
     double amount;
     double total_incomes;
+
+    CopyData copyData;
+    FreeData freeData;
+    GetProductPrice prodPrice;
 };
 
 Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
-                     double amount, unsigned int total_incomes)
+                     double amount, unsigned int total_incomes, CopyData copyData,
+                     FreeData freeData, GetProductPrice prodPrice)
 {
     if(!name || !data)
     {
@@ -43,10 +48,14 @@ Product productCreate(const char* name, unsigned int id, ProductData data, Produ
     }
 
     new_product->id=id;
-    new_product->data=data;
+    new_product->data=malloc(sizeof(data));
+    memcpy(new_product->data,data,sizeof(data));
     new_product->amount_type=amount_type;
     new_product->amount=amount;
     new_product->total_incomes=total_incomes;
+    new_product->copyData=copyData;
+    new_product->freeData=freeData;
+    new_product->prodPrice=prodPrice;
 
     return new_product;
 }
@@ -67,13 +76,13 @@ ASElement productCopy(ASElement product)
     strcpy(new_name,((Product)product)->name);
 
 
-    ProductData new_data = productCopyData(((Product)product)->data);
+    ProductData new_data = ((Product)product)->copyData(((Product)product)->data);
     if (!new_data){
         free(new_name);
         return NULL;
     }
 
-    return productCreate(new_name, ((Product)product)->id, new_data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes);
+    return productCreate(new_name, ((Product)product)->id, new_data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes, ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
 
 }
 
@@ -84,7 +93,7 @@ void productFree(ASElement product)
         return;
     }
     //Maybe?
-    productFreeData(((Product)product)->data);
+    ((Product)product)->freeData(((Product)product)->data);
     free(((Product)product)->name);
     free(((Product)product));
 }
@@ -145,15 +154,15 @@ ProductResult addProductAmount(Product product, const double amount)
     return PRODUCT_SUCCESS;
 }
 /********************************************************/
-ProductData productCopyData(ProductData data){
-    ProductData new_data=malloc(sizeof(*(double*)data));
-    if(!new_data)
-    {
-        return NULL;
-    }
-    memcpy(new_data,data,sizeof(*(double*)data));
-    return new_data;
-}
+// ProductData productCopyData(ProductData data){
+//     ProductData new_data=malloc(sizeof(*(double*)data));
+//     if(!new_data)
+//     {
+//         return NULL;
+//     }
+//     memcpy(new_data,data,sizeof(*(double*)data));
+//     return new_data;
+// }
 
 ProductData productGetData(Product product) {
     return product->data;
@@ -166,21 +175,21 @@ void productAddIncomes(Product product, unsigned int incomes) {
     product->total_incomes+=incomes;
 }
 
-void productFreeData(ProductData data){
-    if(data==NULL) {
-        return;
-    }
-    free((double*)data);
-}
+// void productFreeData(ProductData data){
+//     if(data==NULL) {
+//         return;
+//     }
+//     free((double*)data);
+// }
 
-double productGetPrice (ProductData data, double amount){
+double productGetPrice (Product product, double amount){
     /*Add Check if Discount*/
-    return basicGetPrice(data,amount);
+    return product->prodPrice(product->data,amount);
 }
 
-double basicGetPrice(ProductData basePrice, double amount){
-        return (*(double*)basePrice) * amount;
-}
+// double basicGetPrice(ProductData basePrice, double amount){
+//         return (*(double*)basePrice) * amount;
+// }
 
 double productGetAmount(Product product) {
     return product->amount;
@@ -195,7 +204,7 @@ unsigned int productGetID(Product product) {
 }
 
 double productGetPricePerUnit(Product product) {
-    return *(double*)product->data;
+    return (((Product)product)->prodPrice)(((Product)product)->data,1);
 }
 
 double productGetTotalIncomes(Product product) {

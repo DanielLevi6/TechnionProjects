@@ -23,8 +23,15 @@ typedef struct Product_t *Product;
 
 typedef void *ProductData;
 
+typedef ProductData (*CopyData)(ProductData);
+
+typedef void (*FreeData)(ProductData);
+
+typedef double (*GetProductPrice)(ProductData, const double amount);
+
 Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
-                      double amount, unsigned int total_incomes);
+                      double amount, unsigned int total_incomes, CopyData copyData,
+                      FreeData freeData, GetProductPrice prodPrice);
 
 ASElement productCopy(ASElement product);
 
@@ -42,18 +49,18 @@ ProductResult addProductAmount(Product product, const double amount);
 
 /*************************************************/
 
-ProductData productCopyData(ProductData data);
+// ProductData productCopyData(ProductData data);
 
 ProductData productGetData(Product product);
 
 void productAddIncomes(Product product, unsigned int incomes);
 
-void productFreeData(ProductData data);
+// void productFreeData(ProductData data);
 
-double productGetPrice (ProductData data, double Amount);
+ double productGetPrice (Product product, double Amount);
 
 /*Get Price- Discounts*/
-double basicGetPrice(ProductData basePrice, double amount);
+// double basicGetPrice(ProductData basePrice, double amount);
 
 double productGetAmount(Product product);
 
