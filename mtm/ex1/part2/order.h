@@ -37,7 +37,7 @@ Product getNextProductInOrder(Order order);
 
 double calcPrice(Order order);
 
-OrderResult orderAddProduct(Order order, Product product, double amount);
+OrderResult orderAddProduct(Order order, Product product, const double amount);
 
 AmountSet orderGetProducts(Order order);
 

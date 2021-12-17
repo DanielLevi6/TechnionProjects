@@ -93,7 +93,7 @@ Product getFirstProductInOrder(Order order) {
         return NULL;
     }
 
-    return asGetFirst(order->products);
+    return (Product)asGetFirst(order->products);
 }
 
 Product getNextProductInOrder(Order order) {
@@ -102,7 +102,7 @@ Product getNextProductInOrder(Order order) {
         return NULL;
     }
 
-    return asGetNext(order->products);
+    return (Product)asGetNext(order->products);
 }
 
 double calcPrice(Order order) {
@@ -114,14 +114,14 @@ double calcPrice(Order order) {
     Product iter=asGetFirst(order->products);
     while(iter) 
     {
-        productGetPrice(productGetData(iter),productGetAmount(iter));
+        price+=productGetPrice(iter,productGetAmount(iter));
         iter=asGetNext(order->products);
     }
 
     return price;
 }
 
-OrderResult orderAddProduct(Order order, Product product, double amount)
+OrderResult orderAddProduct(Order order, Product product, const double amount)
 {
     if(!order)
     {

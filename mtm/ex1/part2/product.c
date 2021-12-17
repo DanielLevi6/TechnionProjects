@@ -32,7 +32,7 @@ Product productCreate(const char* name, unsigned int id, ProductData data, Produ
         return NULL;
     }
 
-    new_product->name=malloc(sizeof(*name)+1);
+    new_product->name=malloc(strlen(name)+1);
     if(!new_product->name)
     {
         free(new_product);
@@ -69,7 +69,7 @@ ASElement productCopy(ASElement product)
         return NULL;
     }
 
-    char* new_name=malloc(sizeof(*(((Product)product)->name))+1);
+    char* new_name=malloc(strlen(((Product)product)->name)+1);
     if(!new_name)
     {
         return NULL;
@@ -77,13 +77,13 @@ ASElement productCopy(ASElement product)
     strcpy(new_name,((Product)product)->name);
 
 
-    ProductData new_data = ((Product)product)->copyData(((Product)product)->data);
-    if (!new_data){
-        free(new_name);
-        return NULL;
-    }
+//    ProductData new_data = ((Product)product)->copyData(((Product)product)->data);
+    // if (!new_data){
+    //     free(new_name);
+    //     return NULL;
+    // }
 
-    return productCreate(new_name, ((Product)product)->id, new_data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes, ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
+    return productCreate(new_name, ((Product)product)->id, ((Product)product)->data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes, ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
 
 }
 

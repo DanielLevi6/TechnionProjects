@@ -29,17 +29,18 @@ typedef void (*FreeData)(ProductData);
 
 typedef double (*GetProductPrice)(ProductData, const double amount);
 
-Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
-                      double amount, unsigned int total_incomes, CopyData copyData,
-                      FreeData freeData, GetProductPrice prodPrice);
-
 ASElement productCopy(ASElement product);
 
 void productFree(ASElement product);
 
-int productCompareByName(Product product1, Product product2);
-
 int productCompareByID(ASElement product1, ASElement product2);
+
+Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
+                      double amount, unsigned int total_incomes, CopyData copyData,
+                      FreeData freeData, GetProductPrice prodPrice);
+
+
+int productCompareByName(Product product1, Product product2);
 
 unsigned int getProductID(Product product);
 

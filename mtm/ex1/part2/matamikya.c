@@ -31,6 +31,7 @@ Matamikya matamikyaCreate() {
     }
     new_storage->orders=asCreate(copyOrder,freeOrder,compareOrders);
     new_storage->order_counter=1;
+    new_storage->incomes=0;
     return new_storage;
 }
 
@@ -242,7 +243,8 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId) {
         productAddIncomes(warehouse_product,incomes);
     }
 
-    freeOrder(order);
+    //The Error
+    //freeOrder(order);
     return MATAMIKYA_SUCCESS;
 
 }
@@ -291,7 +293,7 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
     
     Product iter=asGetFirst(orderGetProducts(found));
     while(iter) {
-        mtmPrintProductDetails(productGetName(iter),productGetID(iter),productGetAmount(iter),productGetPricePerUnit(iter),output);
+        mtmPrintProductDetails(productGetName(iter),productGetID(iter),productGetAmount(iter),productGetPrice(iter,productGetAmount(iter)),output);
         iter=asGetNext(orderGetProducts(found));
     }
 
@@ -312,6 +314,8 @@ MatamikyaResult mtmPrintBestSelling(Matamikya matamikya, FILE *output) {
         fprintf(output, "none\n");
         return MATAMIKYA_SUCCESS;
     }
+    bool productsNotSold=true;
+
     double max_incomes=productGetTotalIncomes(iter);
     
     while(iter) {
@@ -323,9 +327,18 @@ MatamikyaResult mtmPrintBestSelling(Matamikya matamikya, FILE *output) {
 
     iter=asGetFirst(matamikya->products);
     while(iter) {
-        if(max_incomes==productGetTotalIncomes(iter)) {
+        if(max_incomes > 0 && max_incomes==productGetTotalIncomes(iter)) {
             mtmPrintIncomeLine(productGetName(iter),productGetID(iter),productGetTotalIncomes(iter),output);
+            productsNotSold=false;
+            break;
         }
+        iter=asGetNext(matamikya->products);
+    }
+
+    if(productsNotSold)
+    {
+        fprintf(output, "none\n");
+        return MATAMIKYA_SUCCESS;
     }
 
     return MATAMIKYA_SUCCESS;
