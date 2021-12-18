@@ -73,9 +73,9 @@ OrderResult changeProductAmountInOrder(Order order, const unsigned int productId
 
             if (result == PRODUCT_NULL_ARGUMENT) {
                 return ORDER_NULL_ARGUMENT;
-            } else if (result == PRODUCT_INSUFFICIENT_AMOUNT) {
-                return ORDER_INSUFFICIENT_AMOUNT;
-            }
+            }// } else if (result == PRODUCT_INSUFFICIENT_AMOUNT) {
+            //     return ORDER_INSUFFICIENT_AMOUNT;
+            // }
             return ORDER_SUCCESS;
         }
     }
@@ -127,7 +127,7 @@ OrderResult orderAddProduct(Order order, Product product, const double amount)
     {
         return ORDER_NULL_ARGUMENT;
     }
-    if(amount<0)
+    if(amount+productGetAmount(product)<0 || checkAmount(amount,productGetAmountType(product))/* || checkAmount(amount+productGetAmount(product), productGetAmountType(product))*/ /*Because thatt's the general product. we need to check against the order's product*/)
     {
         return ORDER_INVALID_AMOUNT;
     }
@@ -146,4 +146,14 @@ OrderResult orderAddProduct(Order order, Product product, const double amount)
 
 AmountSet orderGetProducts(Order order) {
     return order->products;
+}
+
+bool orderIsShipped(Order order)
+{
+    return order->shipped;
+}
+
+void orderShippedUpdate(Order order)
+{
+    order->shipped=true;
 }

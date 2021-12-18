@@ -41,4 +41,8 @@ OrderResult orderAddProduct(Order order, Product product, const double amount);
 
 AmountSet orderGetProducts(Order order);
 
+bool orderIsShipped(Order order);
+
+void orderShippedUpdate(Order order);
+
 #endif //MATAMIKYA_ORDER_H

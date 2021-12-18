@@ -77,4 +77,6 @@ ProductAmountType productGetAmountType(Product product);
 
 void productSetAmount(Product new_product, double amount);
 
+bool checkAmount(const double amount, const ProductAmountType amountType);
+
 #endif //MATAMIKYA_PRODUCT_H

@@ -8,7 +8,7 @@
 #include "set.h"
 #include "matamikya_print.h"
 
-#define AMOUNT_OFFSET 0.001
+//#define AMOUNT_OFFSET 0.001
 
 struct Matamikya_t {
     unsigned int incomes;
@@ -44,15 +44,15 @@ void matamikyaDestroy(Matamikya matamikya) {
     asDestroy(matamikya->products);
     free(matamikya);
 }
-// should add the case of checking amount and the added amount separately
-static bool checkAmount(const double amount, const MatamikyaAmountType amountType) {
+// // should add the case of checking amount and the added amount separately
+// static bool checkAmount(const double amount, const MatamikyaAmountType amountType) {
 
-    double sub_amount=amount-floor(amount);
+//     double sub_amount=amount-floor(amount);
 
-    return ((amountType==MATAMIKYA_INTEGER_AMOUNT&& (sub_amount>AMOUNT_OFFSET && sub_amount<(1-AMOUNT_OFFSET))) ||
-       (amountType==MATAMIKYA_HALF_INTEGER_AMOUNT && (sub_amount>(0.5+AMOUNT_OFFSET) && sub_amount<(1-AMOUNT_OFFSET))) ||
-       (amountType==MATAMIKYA_HALF_INTEGER_AMOUNT && (sub_amount<(0.5-AMOUNT_OFFSET) && sub_amount>AMOUNT_OFFSET)));
-}
+//     return ((amountType==MATAMIKYA_INTEGER_AMOUNT&& (sub_amount>AMOUNT_OFFSET && sub_amount<(1-AMOUNT_OFFSET))) ||
+//        (amountType==MATAMIKYA_HALF_INTEGER_AMOUNT && (sub_amount>(0.5+AMOUNT_OFFSET) && sub_amount<(1-AMOUNT_OFFSET))) ||
+//        (amountType==MATAMIKYA_HALF_INTEGER_AMOUNT && (sub_amount<(0.5-AMOUNT_OFFSET) && sub_amount>AMOUNT_OFFSET)));
+// }
 
 MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const char *name,
                               const double amount, const MatamikyaAmountType amountType,
@@ -106,21 +106,23 @@ MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int i
     {
         if(getProductID(iterator)==id)
         {
-            if(checkAmount(amount, productGetAmountType(iterator)))
+            if(checkAmount(amount, productGetAmountType(iterator)) || checkAmount(amount+productGetAmount(iterator), productGetAmountType(iterator)))
             {
                 return MATAMIKYA_INVALID_AMOUNT;
             }
-
+            if (productGetAmount(iterator)+amount<0) {
+                return MATAMIKYA_INSUFFICIENT_AMOUNT;
+            }
             ProductResult result=addProductAmount(iterator,amount); //Can be cchanged to a set operation
 
             if(result==PRODUCT_NULL_ARGUMENT)
             {
                 return MATAMIKYA_NULL_ARGUMENT;
             }
-            else if(result==PRODUCT_INSUFFICIENT_AMOUNT)
-            {
-                return MATAMIKYA_INSUFFICIENT_AMOUNT;
-            }
+            // else if(result==PRODUCT_INSUFFICIENT_AMOUNT)
+            // {
+            //     return MATAMIKYA_INSUFFICIENT_AMOUNT;
+            // }
             return MATAMIKYA_SUCCESS;
         }
     }
@@ -210,19 +212,27 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
         
         if(product)
         {
-            orderAddProduct(order,product,amount);
+            result = orderAddProduct(order,product,amount);
+            if(result==ORDER_INVALID_AMOUNT)
+            {
+                return MATAMIKYA_INVALID_AMOUNT;
+            }
             return MATAMIKYA_SUCCESS;
         }
         return MATAMIKYA_PRODUCT_NOT_EXIST;
     }
-    if(checkAmount(amount,productGetAmountType(product)))
-    {
-        return MATAMIKYA_INVALID_AMOUNT;
-    }
-    if(result==ORDER_INSUFFICIENT_AMOUNT)
-    {
-        return MATAMIKYA_INSUFFICIENT_AMOUNT;
-    }
+
+    //might be a problem. we need to check this in the product of the order. not the general product
+    // if(checkAmount(amount,productGetAmountType(product)) || checkAmount(amount+productGetAmount(product), productGetAmountType(product)))
+    // {
+    //     return MATAMIKYA_INVALID_AMOUNT;
+    // }
+
+
+    // if(result==ORDER_INSUFFICIENT_AMOUNT)
+    // {
+    //     return MATAMIKYA_INSUFFICIENT_AMOUNT;
+    // }
     return MATAMIKYA_SUCCESS;
 
 }
@@ -234,6 +244,10 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId) {
     }
 
     Order order=searchInOrders(matamikya,orderId);
+    if(!order || orderIsShipped(order))
+    {
+        return MATAMIKYA_ORDER_NOT_EXIST;
+    }
     for(Product iterator=getFirstProductInOrder(order);iterator;iterator=getNextProductInOrder(order)) {
         Product warehouse_product=searchInProducts(matamikya,getProductID(iterator));
         double warehouse_product_amount=productGetAmount(warehouse_product);
@@ -248,7 +262,11 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId) {
         unsigned int incomes=productGetPrice(warehouse_product,amount_to_decrease);
         matamikya->incomes+=incomes;
         productAddIncomes(warehouse_product,incomes);
+
+        productSetAmount(warehouse_product,getProductAmount(warehouse_product)-amount_to_decrease);
     }
+
+    orderShippedUpdate(order);
 
     //The Error
     //freeOrder(order);

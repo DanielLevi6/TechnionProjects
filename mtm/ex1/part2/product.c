@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "amount_set.h"
+#include <math.h>
+
+#define AMOUNT_OFFSET 0.001
 
 struct Product_t {
     char* name;
@@ -146,10 +149,10 @@ ProductResult addProductAmount(Product product, const double amount)
         return PRODUCT_NULL_ARGUMENT;
     }
 
-    if(product->amount+amount < 0)
-    {
-        return PRODUCT_INSUFFICIENT_AMOUNT;
-    }
+    // if(product->amount+amount < 0)
+    // {
+    //     return PRODUCT_INSUFFICIENT_AMOUNT;
+    // }
 
     product->amount+=amount;
     return PRODUCT_SUCCESS;
@@ -224,4 +227,14 @@ void productSetAmount(Product new_product, double amount)
     }
 
     new_product->amount=amount;
+}
+
+// should add the case of checking amount and the added amount separately
+bool checkAmount(const double amount, const ProductAmountType amountType) {
+
+    double sub_amount=amount-floor(amount);
+
+    return ((amountType==PRODUCT_INTEGER_AMOUNT&& (sub_amount>AMOUNT_OFFSET && sub_amount<(1-AMOUNT_OFFSET))) ||
+       (amountType==PRODUCT_HALF_INTEGER_AMOUNT && (sub_amount>(0.5+AMOUNT_OFFSET) && sub_amount<(1-AMOUNT_OFFSET))) ||
+       (amountType==PRODUCT_HALF_INTEGER_AMOUNT && (sub_amount<(0.5-AMOUNT_OFFSET) && sub_amount>AMOUNT_OFFSET)));
 }
