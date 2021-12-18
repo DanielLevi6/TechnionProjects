@@ -69,12 +69,12 @@ ASElement productCopy(ASElement product)
         return NULL;
     }
 
-    char* new_name=malloc(strlen(((Product)product)->name)+1);
-    if(!new_name)
-    {
-        return NULL;
-    }
-    strcpy(new_name,((Product)product)->name);
+    // char* new_name=malloc(strlen(((Product)product)->name)+1);
+    // if(!new_name)
+    // {
+    //     return NULL;
+    // }
+    // strcpy(new_name,((Product)product)->name);
 
 
 //    ProductData new_data = ((Product)product)->copyData(((Product)product)->data);
@@ -83,7 +83,7 @@ ASElement productCopy(ASElement product)
     //     return NULL;
     // }
 
-    return productCreate(new_name, ((Product)product)->id, ((Product)product)->data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes, ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
+    return productCreate(((Product)product)->name, ((Product)product)->id, ((Product)product)->data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes, ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
 
 }
 
@@ -183,7 +183,7 @@ void productAddIncomes(Product product, unsigned int incomes) {
 //     free((double*)data);
 // }
 
-double productGetPrice (Product product, double amount){
+double productGetPrice (Product product, const double amount){
     /*Add Check if Discount*/
     return product->prodPrice(product->data,amount);
 }

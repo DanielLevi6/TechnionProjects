@@ -135,6 +135,11 @@ OrderResult orderAddProduct(Order order, Product product, const double amount)
     productSetAmount(new_product, amount);
 
     asRegister(order->products,new_product);
+    /**/
+    asChangeAmount(order->products,new_product,productGetID(product));
+    /**/
+
+    productFree(new_product);
 
     return ORDER_SUCCESS;
 }

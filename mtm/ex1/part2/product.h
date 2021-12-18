@@ -58,7 +58,7 @@ void productAddIncomes(Product product, unsigned int incomes);
 
 // void productFreeData(ProductData data);
 
- double productGetPrice (Product product, double Amount);
+ double productGetPrice (Product product, const double amount);
 
 /*Get Price- Discounts*/
 // double basicGetPrice(ProductData basePrice, double amount);

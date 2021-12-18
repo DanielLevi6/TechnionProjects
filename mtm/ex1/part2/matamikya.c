@@ -79,6 +79,9 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
     }
 
     AmountSetResult result=asRegister(matamikya->products, new_product);
+    /**/
+    asChangeAmount(matamikya->products,new_product,productGetID(new_product));
+    /**/
     productFree(new_product);
 
     if(result==AS_NULL_ARGUMENT || result==AS_OUT_OF_MEMORY)
@@ -151,6 +154,10 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya){
     }
 
     asRegister(matamikya->orders, new_order);
+    /**/
+    asChangeAmount(matamikya->orders, new_order, getOrderID(new_order));
+    /**/
+    freeOrder(new_order);
     return matamikya->order_counter++;
 }
 

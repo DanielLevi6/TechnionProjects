@@ -21,7 +21,7 @@ set(CMAKE_C_FLAGS ${MTM_FLAGS_DEBUG})
 
 
 link_directories(.)
-add_executable(matamikya amount_set.h list.h matamikya_print.h matamikya_print.c matamikya.h matamikya.c set.h order.h order.c product.c product.h tests/matamikya_tests.c tests/matamikya_main.c)
+add_executable(matamikya amount_set.h list.h matamikya_print.h matamikya_print.c matamikya.h matamikya.c set.h order.h order.c product.c product.h matamikya_tests.c matamikya_main.c)
 target_link_libraries(matamikya libas.a libmtm.a)
 
 
