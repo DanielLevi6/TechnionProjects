@@ -69,6 +69,13 @@ OrderResult changeProductAmountInOrder(Order order, const unsigned int productId
 
     for (Product iterator = asGetFirst(order->products); iterator; iterator = asGetNext(order->products)) {
         if (getProductID(iterator) == productId) {
+            /********************************7:21***********/
+            if(getProductAmount(iterator)+amount<0)
+            {
+                asDelete(order->products,iterator);
+                return ORDER_SUCCESS;
+            }
+            /***********************************************/
             ProductResult result = addProductAmount(iterator, amount);
 
             if (result == PRODUCT_NULL_ARGUMENT) {
@@ -127,10 +134,17 @@ OrderResult orderAddProduct(Order order, Product product, const double amount)
     {
         return ORDER_NULL_ARGUMENT;
     }
-    if(amount+productGetAmount(product)<0 || checkAmount(amount,productGetAmountType(product))/* || checkAmount(amount+productGetAmount(product), productGetAmountType(product))*/ /*Because thatt's the general product. we need to check against the order's product*/)
+    if(/*amount+productGetAmount(product)<0 ||*/ checkAmount(amount,productGetAmountType(product))/* || checkAmount(amount+productGetAmount(product), productGetAmountType(product))*/ /*Because thatt's the general product. we need to check against the order's product*/)
     {
         return ORDER_INVALID_AMOUNT;
     }
+
+    //For not adding in case there is a negative amount
+    if(amount<0)
+    {
+        return ORDER_SUCCESS;
+    }
+    
     Product new_product=productCopy(product);
     productSetAmount(new_product, amount);
 

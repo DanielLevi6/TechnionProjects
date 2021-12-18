@@ -95,7 +95,7 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
     return MATAMIKYA_SUCCESS;
 }
 
-
+//recheck
 MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int id, const double amount) {
     if(!matamikya)
     {
@@ -193,7 +193,7 @@ static Product searchInProducts(Matamikya matamikya, const unsigned int productI
     return NULL;
 }
 
-
+//recheck
 MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigned int orderId,
                                               const unsigned int productId, const double amount){
     if(!matamikya){
@@ -279,10 +279,15 @@ MatamikyaResult mtmCancelOrder(Matamikya matamikya, const unsigned int orderId) 
         return MATAMIKYA_NULL_ARGUMENT;
     }
 
-    AmountSetResult result=asDelete(matamikya->orders,searchInOrders(matamikya,orderId));
+    Order to_delete=searchInOrders(matamikya,orderId);
+    if(!to_delete)
+    {
+        return MATAMIKYA_ORDER_NOT_EXIST;
+    }
+    AmountSetResult result=asDelete(matamikya->orders,to_delete);
     if(result==AS_NULL_ARGUMENT) {
         return MATAMIKYA_NULL_ARGUMENT;
-    } else if(result==AS_ITEM_DOES_NOT_EXIST) {
+    } else if(result==AS_ITEM_DOES_NOT_EXIST) {//not neccessary. if it won't find the order it will exit in the previous if
         return MATAMIKYA_ORDER_NOT_EXIST;
     } else {
         return MATAMIKYA_SUCCESS;
