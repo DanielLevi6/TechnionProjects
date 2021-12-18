@@ -206,6 +206,10 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
     {
         return MATAMIKYA_ORDER_NOT_EXIST;
     }
+    if(result==ORDER_INVALID_AMOUNT)
+    {
+        return MATAMIKYA_INVALID_AMOUNT;
+    }
     Product product=searchInProducts(matamikya,productId);
     if(result==ORDER_PRODUCT_NOT_EXIST)
     {

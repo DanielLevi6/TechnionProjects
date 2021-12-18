@@ -66,9 +66,15 @@ OrderResult changeProductAmountInOrder(Order order, const unsigned int productId
     if (!order) {
         return ORDER_NULL_ARGUMENT;
     }
-
     for (Product iterator = asGetFirst(order->products); iterator; iterator = asGetNext(order->products)) {
         if (getProductID(iterator) == productId) {
+
+            //18/12 19:37***********************************************************************
+            if(checkAmount(amount,productGetAmountType(iterator)))
+            {
+                return ORDER_INVALID_AMOUNT;
+            }
+
             /********************************7:21***********/
             if(getProductAmount(iterator)+amount<0)
             {
