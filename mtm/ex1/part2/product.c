@@ -21,7 +21,7 @@ struct Product_t {
 };
 
 Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
-                     double amount, unsigned int total_incomes, CopyData copyData,
+                     double amount, double total_incomes, CopyData copyData,
                      FreeData freeData, GetProductPrice prodPrice)
 {
     if(!name || !data)
@@ -172,7 +172,7 @@ ProductData productGetData(Product product) {
     return product->data;
 }
 
-void productAddIncomes(Product product, unsigned int incomes) {
+void productAddIncomes(Product product, double incomes) {
     if(!product) {
         return;
     }
@@ -232,7 +232,7 @@ void productSetAmount(Product new_product, double amount)
 // should add the case of checking amount and the added amount separately
 bool checkAmount(const double amount, const ProductAmountType amountType) {
 
-    double sub_amount=amount-floor(amount);
+    double sub_amount=amount-(double)floor(amount);
 
     return ((amountType==PRODUCT_INTEGER_AMOUNT&& (sub_amount>AMOUNT_OFFSET && sub_amount<(1-AMOUNT_OFFSET))) ||
        (amountType==PRODUCT_HALF_INTEGER_AMOUNT && (sub_amount>(0.5+AMOUNT_OFFSET) && sub_amount<(1-AMOUNT_OFFSET))) ||

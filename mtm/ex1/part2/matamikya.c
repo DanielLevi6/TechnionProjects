@@ -8,10 +8,10 @@
 #include "set.h"
 #include "matamikya_print.h"
 
-//#define AMOUNT_OFFSET 0.001
+//#define AMOUNT_OFFSET 0.1
 
 struct Matamikya_t {
-    unsigned int incomes;
+    double incomes;
     AmountSet products;
     AmountSet orders;
 
@@ -136,9 +136,23 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id) {
         return MATAMIKYA_NULL_ARGUMENT;
     }
 
+    for(Order iterator=asGetFirst(matamikya->orders);iterator;iterator=asGetNext(matamikya->orders))
+    {
+        /*There are more efficient ways to do that*/
+        for(Product product_iterator=asGetFirst(orderGetProducts(iterator));product_iterator;product_iterator=asGetNext(orderGetProducts(iterator)))
+        {
+            if(getProductID(product_iterator)==id)
+            {
+                asDelete(orderGetProducts(iterator),product_iterator);
+                break;
+            }
+        }
+    }
+
     for(Product iterator=asGetFirst(matamikya->products);iterator;iterator=asGetNext(matamikya->products))
     {
         if(getProductID(iterator)==id){
+            matamikya->incomes-=productGetTotalIncomes(iterator); // 19/12 6:13
             asDelete(matamikya->products,iterator);
             return MATAMIKYA_SUCCESS;
         }
@@ -171,7 +185,7 @@ static Order searchInOrders(Matamikya matamikya, const unsigned int orderId){
 
     for(Order iterator=asGetFirst(matamikya->orders);iterator;iterator=asGetNext(matamikya->orders))
     {
-        if(getOrderID(iterator)==orderId){
+        if(getOrderID(iterator)==orderId && !orderIsShipped(iterator)/*Added by daniel 5:49 19/12*/){
             return iterator;
         }
     }
@@ -206,8 +220,7 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
     {
         return MATAMIKYA_ORDER_NOT_EXIST;
     }
-    if(result==ORDER_INVALID_AMOUNT)
-    {
+    else if (result==ORDER_INVALID_AMOUNT){
         return MATAMIKYA_INVALID_AMOUNT;
     }
     Product product=searchInProducts(matamikya,productId);
@@ -216,6 +229,15 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
         
         if(product)
         {
+            /*****************************************************/
+            //9/12 6:04
+
+            if(amount==0)
+            {
+                return MATAMIKYA_SUCCESS;
+            }
+
+            /*****************************************************/
             result = orderAddProduct(order,product,amount);
             if(result==ORDER_INVALID_AMOUNT)
             {
@@ -248,7 +270,7 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId) {
     }
 
     Order order=searchInOrders(matamikya,orderId);
-    if(!order || orderIsShipped(order))
+    if(!order)
     {
         return MATAMIKYA_ORDER_NOT_EXIST;
     }
@@ -263,7 +285,7 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId) {
     for(Product iterator=getFirstProductInOrder(order);iterator;iterator=getNextProductInOrder(order)) {
         Product warehouse_product=searchInProducts(matamikya,getProductID(iterator));// if NULL
         double amount_to_decrease=getProductAmount(iterator);
-        unsigned int incomes=productGetPrice(warehouse_product,amount_to_decrease);
+        double incomes=productGetPrice(warehouse_product,amount_to_decrease);
         matamikya->incomes+=incomes;
         productAddIncomes(warehouse_product,incomes);
 
@@ -273,7 +295,8 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId) {
     orderShippedUpdate(order);
 
     //The Error
-    //freeOrder(order);
+    //freeOrder((ASElement)order);
+
     return MATAMIKYA_SUCCESS;
 
 }
@@ -361,7 +384,7 @@ MatamikyaResult mtmPrintBestSelling(Matamikya matamikya, FILE *output) {
 
     iter=asGetFirst(matamikya->products);
     while(iter) {
-        if(max_incomes > 0 && max_incomes==productGetTotalIncomes(iter)) {
+        if(max_incomes > 0 && (max_incomes-productGetTotalIncomes(iter)<=0.001) && (max_incomes-productGetTotalIncomes(iter)>=-0.001)) {
             mtmPrintIncomeLine(productGetName(iter),productGetID(iter),productGetTotalIncomes(iter),output);
             productsNotSold=false;
             break;

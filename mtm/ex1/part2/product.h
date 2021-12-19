@@ -36,7 +36,7 @@ void productFree(ASElement product);
 int productCompareByID(ASElement product1, ASElement product2);
 
 Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
-                      double amount, unsigned int total_incomes, CopyData copyData,
+                      double amount, double total_incomes, CopyData copyData,
                       FreeData freeData, GetProductPrice prodPrice);
 
 
@@ -54,7 +54,7 @@ ProductResult addProductAmount(Product product, const double amount);
 
 ProductData productGetData(Product product);
 
-void productAddIncomes(Product product, unsigned int incomes);
+void productAddIncomes(Product product, double incomes);
 
 // void productFreeData(ProductData data);
 
