@@ -1,15 +1,8 @@
 #include "product.h"
-#include <stdlib.h>
-#include <string.h>
-#include "amount_set.h"
-#include <math.h>
-
-#define AMOUNT_OFFSET 0.001
 
 struct Product_t {
     char* name;
     unsigned int id;
-    //price in data
     ProductData data;
     ProductAmountType amount_type;
     double amount;
@@ -20,11 +13,14 @@ struct Product_t {
     GetProductPrice prodPrice;
 };
 
+/**
+ * productCreate: create a new Product.
+ */
 Product productCreate(const char* name, unsigned int id, ProductData data, ProductAmountType amount_type,
                      double amount, double total_incomes, CopyData copyData,
                      FreeData freeData, GetProductPrice prodPrice)
 {
-    if(!name || !data)
+    if(!name || !data || !copyData || !freeData || !prodPrice)
     {
         return NULL;
     }
@@ -43,12 +39,6 @@ Product productCreate(const char* name, unsigned int id, ProductData data, Produ
     }
 
     strcpy(new_product->name,name);
-    if(!new_product->name)
-    {
-        free(new_product->name);
-        free(new_product);
-        return NULL;
-    }
 
     new_product->id=id;
     new_product->amount_type=amount_type;
@@ -58,13 +48,14 @@ Product productCreate(const char* name, unsigned int id, ProductData data, Produ
     new_product->freeData=freeData;
     new_product->prodPrice=prodPrice;
 
-    //new_product->data=malloc(sizeof(data));
     new_product->data=copyData(data);
 
     return new_product;
 }
 
-
+/**
+ * productCopy: copy all the product's fields to a new Product.
+ */
 ASElement productCopy(ASElement product)
 {
     if(!((Product)product))
@@ -72,48 +63,34 @@ ASElement productCopy(ASElement product)
         return NULL;
     }
 
-    // char* new_name=malloc(strlen(((Product)product)->name)+1);
-    // if(!new_name)
-    // {
-    //     return NULL;
-    // }
-    // strcpy(new_name,((Product)product)->name);
-
-
-//    ProductData new_data = ((Product)product)->copyData(((Product)product)->data);
-    // if (!new_data){
-    //     free(new_name);
-    //     return NULL;
-    // }
-
-    return productCreate(((Product)product)->name, ((Product)product)->id, ((Product)product)->data, ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes, ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
+    return productCreate(((Product)product)->name, ((Product)product)->id, ((Product)product)->data,
+             ((Product)product)->amount_type, ((Product)product)->amount, ((Product)product)->total_incomes,
+              ((Product)product)->copyData, ((Product)product)->freeData, ((Product)product)->prodPrice);
 
 }
 
+/**
+ * productFree: free a product and all it's content from memory.
+ */
 void productFree(ASElement product)
 {
     if(!((Product)product))
     {
         return;
     }
-    //Maybe?
+
     ((Product)product)->freeData(((Product)product)->data);
     free(((Product)product)->name);
     free(((Product)product));
 }
 
-int productCompareByName(Product product1, Product product2)
-{
-    if(!product1 || !product2)
-    {
-        return 0;
-    }
-
-    return strcmp(product1->name,product2->name);
-}
-
+/**
+ * productCompareByID: compare between two products' IDs.
+ */
 int productCompareByID(ASElement product1, ASElement product2)
 {
+    //We want that if there is a NULL sent to the function
+    //so the AmountSet wouldn't add it to the set(as the case with an identical element)
     if(!((Product)product1) || !((Product)product2))
     {
         return 0;
@@ -122,26 +99,36 @@ int productCompareByID(ASElement product1, ASElement product2)
     return (((Product)product1)->id)-(((Product)product2)->id);
 }
 
-unsigned int getProductID(Product product)
+/**
+ * getProductID: return the Product's ID.
+ */
+bool getProductID(Product product, unsigned int* id)
 {
     if(!product)
     {
-        return -1;
+        return false;
     }
 
-    return product->id;
+    *id = product->id;
+    return true;
 }
 
+/**
+ * getProductAmount: return the Product's amount.
+ */
 double getProductAmount(Product product)
 {
     if(!product)
     {
-        return -1;
+        return ERROR;
     }
 
     return product->amount;
 }
 
+/**
+ * addProductAmount: add amount to product's current amount.
+ */
 ProductResult addProductAmount(Product product, const double amount)
 {
     if(!product)
@@ -149,79 +136,116 @@ ProductResult addProductAmount(Product product, const double amount)
         return PRODUCT_NULL_ARGUMENT;
     }
 
-    // if(product->amount+amount < 0)
-    // {
-    //     return PRODUCT_INSUFFICIENT_AMOUNT;
-    // }
+    if(product->amount + amount < 0)
+    {
+        return PRODUCT_INSUFFICIENT_AMOUNT;
+    }
 
     product->amount+=amount;
     return PRODUCT_SUCCESS;
 }
-/********************************************************/
-// ProductData productCopyData(ProductData data){
-//     ProductData new_data=malloc(sizeof(*(double*)data));
-//     if(!new_data)
-//     {
-//         return NULL;
-//     }
-//     memcpy(new_data,data,sizeof(*(double*)data));
-//     return new_data;
-// }
 
+/**
+ * productGetData: get product's data.
+ */
 ProductData productGetData(Product product) {
+    if(!product)
+    {
+        return NULL;
+    }
+
     return product->data;
 }
 
+/**
+ * productAddIncomes: update product's total_incomes.
+ */
 void productAddIncomes(Product product, double incomes) {
     if(!product) {
         return;
     }
+
     product->total_incomes+=incomes;
 }
 
-// void productFreeData(ProductData data){
-//     if(data==NULL) {
-//         return;
-//     }
-//     free((double*)data);
-// }
-
+/**
+ * productGetPrice: get product's calculated price.
+ */
 double productGetPrice (Product product, const double amount){
-    /*Add Check if Discount*/
+    if(!product)
+    {
+        return ERROR;
+    }
+
     return product->prodPrice(product->data,amount);
 }
 
-// double basicGetPrice(ProductData basePrice, double amount){
-//         return (*(double*)basePrice) * amount;
-// }
-
+/**
+ * productGetAmount: get product's current amount.
+ */
 double productGetAmount(Product product) {
+    if(!product)
+    {
+        return ERROR;
+    }
+
     return product->amount;
 }
 
+/**
+ * productGetName: get product's name.
+ */
 char* productGetName(Product product) {
+    if(!product)
+    {
+        return NULL;
+    }
+
     return product->name;
 }
 
-unsigned int productGetID(Product product) {
-    return product->id;
-}
-
+/**
+ * productGetPricePerUnit: get product's price per 1 unit.
+ */
 double productGetPricePerUnit(Product product) {
+    if(!product)
+    {
+        return ERROR;
+    }
+
     return (((Product)product)->prodPrice)(((Product)product)->data,1);
 }
 
+/**
+ * productGetTotalIncomes: get product's total incomes.
+ */
 double productGetTotalIncomes(Product product) {
+    if(!product)
+    {
+        return ERROR;
+    }
+
     return product->total_incomes;
 }
 
+/**
+ * productGetAmountType: get product's amount_type,
+ */
 ProductAmountType productGetAmountType(Product product) {
+    if(!product)
+    {
+        return ERROR;
+    }
+
     return product->amount_type;
 }
 
+/**
+ * productSetAmount: update product's amount to the given amount.
+ */
 void productSetAmount(Product new_product, double amount)
 {
-    if(!new_product)
+    if(!new_product || amount < 0)
     {
         return;
     }
@@ -229,12 +253,20 @@ void productSetAmount(Product new_product, double amount)
     new_product->amount=amount;
 }
 
-// should add the case of checking amount and the added amount separately
-bool checkAmount(const double amount, const ProductAmountType amountType) {
+/**
+ * checkAmount: check if the given amount matches to the product's amount type,
+ * with deviation of 0.001.
+ */
+ProductResult checkAmount(const double amount, const ProductAmountType amountType) {
 
     double sub_amount=amount-(double)floor(amount);
 
-    return ((amountType==PRODUCT_INTEGER_AMOUNT&& (sub_amount>AMOUNT_OFFSET && sub_amount<(1-AMOUNT_OFFSET))) ||
+    if ((amountType==PRODUCT_INTEGER_AMOUNT&& (sub_amount>AMOUNT_OFFSET && sub_amount<(1-AMOUNT_OFFSET))) ||
        (amountType==PRODUCT_HALF_INTEGER_AMOUNT && (sub_amount>(0.5+AMOUNT_OFFSET) && sub_amount<(1-AMOUNT_OFFSET))) ||
-       (amountType==PRODUCT_HALF_INTEGER_AMOUNT && (sub_amount<(0.5-AMOUNT_OFFSET) && sub_amount>AMOUNT_OFFSET)));
+       (amountType==PRODUCT_HALF_INTEGER_AMOUNT && (sub_amount<(0.5-AMOUNT_OFFSET) && sub_amount>AMOUNT_OFFSET)))
+       {
+           return PRODUCT_INVALID_AMOUNT;
+       }
+    
+    return PRODUCT_SUCCESS;
 }

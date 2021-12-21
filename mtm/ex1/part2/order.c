@@ -1,16 +1,12 @@
 #include "order.h"
-#include "product.h"
-#include "set.h"
-#include "amount_set.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
+
 
 struct order_t {
     unsigned int id;
     bool shipped;
     AmountSet products;
 };
+
 
 Order createOrder(unsigned int id) {
     Order new_order = malloc(sizeof(*new_order));
@@ -26,6 +22,7 @@ Order createOrder(unsigned int id) {
         free(new_order);
         return NULL;
     }
+
     return new_order;
 }
 
@@ -47,18 +44,27 @@ ASElement copyOrder(ASElement source) {
         free(copy);
         return NULL;
     }
+
     return copy;
 }
 
 void freeOrder(ASElement to_delete) {
+    if(!to_delete)
+    {
+        return;
+    }
+
     asDestroy(((Order)to_delete)->products);
     free((Order)to_delete);
 }
 
 int compareOrders(ASElement first, ASElement second) {
+    //We want that if there is a NULL sent to the function
+    //so the AmountSet wouldn't add it to the set(as the case with an identical element)
     if (!((Order)first) || !((Order)second)) {
         return 0;
     }
+
     return (((Order)first)->id) - (((Order)second)->id);
 }
 
@@ -68,9 +74,9 @@ OrderResult changeProductAmountInOrder(Order order, const unsigned int productId
     }
 
     for (Product iterator = asGetFirst(order->products); iterator; iterator = asGetNext(order->products)) {
-        if (getProductID(iterator) == productId) {
-            /********************************7:21***********/
-            if(checkAmount(amount, productGetAmountType(iterator))){
+        unsigned int iterator_id = productId + 1; //We want it to be different from the productId at first
+        if (getProductID(iterator , &iterator_id) && iterator_id == productId) {
+            if(checkAmount(amount, productGetAmountType(iterator)) == PRODUCT_INVALID_AMOUNT){
                 return ORDER_INVALID_AMOUNT;
             }
 
@@ -79,15 +85,13 @@ OrderResult changeProductAmountInOrder(Order order, const unsigned int productId
                 asDelete(order->products,iterator);
                 return ORDER_SUCCESS;
             }
-            /***********************************************/
 
             ProductResult result = addProductAmount(iterator, amount);
 
             if (result == PRODUCT_NULL_ARGUMENT) {
                 return ORDER_NULL_ARGUMENT;
-            }// } else if (result == PRODUCT_INSUFFICIENT_AMOUNT) {
-            //     return ORDER_INSUFFICIENT_AMOUNT;
-            // }
+            }
+            
             return ORDER_SUCCESS;
         }
     }
@@ -95,8 +99,14 @@ OrderResult changeProductAmountInOrder(Order order, const unsigned int productId
     return ORDER_PRODUCT_NOT_EXIST;
 }
 
-unsigned int getOrderID(Order order) {
-    return order->id;
+bool getOrderID(Order order, unsigned int* id) {
+    if(!order)
+    {
+        return NULL;
+    }
+
+    *id = order->id;
+    return true;
 }
 
 Product getFirstProductInOrder(Order order) {
@@ -139,7 +149,7 @@ OrderResult orderAddProduct(Order order, Product product, const double amount)
     {
         return ORDER_NULL_ARGUMENT;
     }
-    if(/*amount+productGetAmount(product)<0 ||*/ checkAmount(amount,productGetAmountType(product))/* || checkAmount(amount+productGetAmount(product), productGetAmountType(product))*/ /*Because thatt's the general product. we need to check against the order's product*/)
+    if(checkAmount(amount,productGetAmountType(product)) == PRODUCT_INVALID_AMOUNT)
     {
         return ORDER_INVALID_AMOUNT;
     }
@@ -151,28 +161,50 @@ OrderResult orderAddProduct(Order order, Product product, const double amount)
     }
     
     Product new_product=productCopy(product);
+    if(!new_product)
+    {
+        return ORDER_OUT_OF_MEMORY;
+    }
+
     productSetAmount(new_product, amount);
 
     asRegister(order->products,new_product);
-    /**/
-    asChangeAmount(order->products,new_product,productGetID(product));
-    /**/
 
-    productFree(new_product);
+    unsigned int product_id = 0; //We want it to be different from the productId at first
+    getProductID(product , &product_id);
+    asChangeAmount(order->products,new_product,product_id);//Ordeering the set by the id
+
+
+    productFree(new_product);//After adding it to the amount set< it can be deleted
 
     return ORDER_SUCCESS;
 }
 
 AmountSet orderGetProducts(Order order) {
+    if(!order)
+    {
+        return NULL;
+    }
+
     return order->products;
 }
 
 bool orderIsShipped(Order order)
 {
+    if(!order)
+    {
+        return NULL;
+    }
+
     return order->shipped;
 }
 
 void orderShippedUpdate(Order order)
 {
+    if(!order)
+    {
+        return;
+    }
+
     order->shipped=true;
 }
