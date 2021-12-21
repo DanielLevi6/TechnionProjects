@@ -226,7 +226,7 @@ static Product searchInProducts(Matamikya matamikya, const unsigned int product_
     return NULL;
 }
 
-MatamikyaResult mtmorderChangeProductAmount(Matamikya matamikya, const unsigned int orderId,
+MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigned int orderId,
                                               const unsigned int productId, const double amount)
 {
     if(!matamikya) {

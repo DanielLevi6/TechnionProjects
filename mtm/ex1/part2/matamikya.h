@@ -181,7 +181,7 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id);
 unsigned int mtmCreateNewOrder(Matamikya matamikya);
 
 /**
- * mtmorderChangeProductAmount: add/increase/remove/decrease products to an existing order.
+ * mtmChangeProductAmountInOrder: add/increase/remove/decrease products to an existing order.
  * Only products that exist inside the matamikya can be added to an order.
  * if 'amount' < 0 then this amount should be decreased from the product in the order.
  * if 'amount' > 0 then this amount should be added to the product in the order.
@@ -209,7 +209,7 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya);
  *    error code is returned if one of the parameters is invalid, and MATAMIKYA_SUCCESS
  *    is returned if all the parameters are valid.
  */
-MatamikyaResult mtmorderChangeProductAmount(Matamikya, const unsigned int orderId,
+MatamikyaResult mtmChangeProductAmountInOrder(Matamikya, const unsigned int orderId,
                                      const unsigned int productId, const double amount);
 
 /**
