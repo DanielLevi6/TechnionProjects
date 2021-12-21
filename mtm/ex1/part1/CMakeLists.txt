@@ -1,11 +1,7 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(AmountSet VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.17)
+project(part1 C)
 
-include(CTest)
-enable_testing()
+set(CMAKE_C_STANDARD 99)
 
-add_executable(AmountSet Test.c amount_set_str.c amount_set_str.h)
+add_executable(part1 amount_set_str.c amount_set_str.h Tests.c Tests.h main_tests.c)
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
