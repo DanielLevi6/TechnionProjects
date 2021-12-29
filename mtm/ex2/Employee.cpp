@@ -64,8 +64,8 @@ namespace mtm {
            "\nid - " << getID() << " birth_year - " << getBirthYear() <<
            "\nSalary: " << getSalary() << " Score: " << getScore() <<
            " Skills:\n" << endl;
-        for (auto s = skill.cbegin(); s != skill.cend(); ++s) {
-            os << s->getName() << "\n" << endl;
+        for (const auto & s : skill) {
+            os << s.getName() << "\n" << endl;
         }
         return os;
     }

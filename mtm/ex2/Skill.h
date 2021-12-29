@@ -39,6 +39,13 @@ namespace mtm {
         Skill &operator+(const int posPoints);
 
     };
+    bool operator>(const Skill &skill1, const Skill &skill2);
+
+    bool operator<=(const Skill &skill1, const Skill &skill2);
+
+    bool operator>=(const Skill &skill1, const Skill &skill2);
+
+    bool operator!=(const Skill &skill1, const Skill &skill2);
 
 }
 #endif //EX2_SKILL_H

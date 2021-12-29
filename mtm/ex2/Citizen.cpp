@@ -2,15 +2,6 @@
 
 namespace mtm {
 
-    bool operator>(const Citizen &citizen1, const Citizen &citizen2);
-
-    bool operator<=(const Citizen &citizen1, const Citizen &citizen2);
-
-    bool operator>=(const Citizen &citizen1, const Citizen &citizen2);
-
-    bool operator!=(const Citizen &citizen1, const Citizen &citizen2);
-
-
     unsigned int Citizen::getID() const {
         return this->ID;
     }

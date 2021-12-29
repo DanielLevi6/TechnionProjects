@@ -39,5 +39,13 @@ namespace mtm {
 
         virtual Citizen *clone() const = 0;
     };
+
+    bool operator>(const Citizen &citizen1, const Citizen &citizen2);
+
+    bool operator<=(const Citizen &citizen1, const Citizen &citizen2);
+
+    bool operator>=(const Citizen &citizen1, const Citizen &citizen2);
+
+    bool operator!=(const Citizen &citizen1, const Citizen &citizen2);
 }
 #endif //EX2_CITIZEN_H

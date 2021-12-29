@@ -1,14 +1,6 @@
 #include "Skill.h"
 
 namespace mtm {
-    bool operator>(const Skill &skill1, const Skill &skill2);
-
-    bool operator<=(const Skill &skill1, const Skill &skill2);
-
-    bool operator>=(const Skill &skill1, const Skill &skill2);
-
-    bool operator!=(const Skill &skill1, const Skill &skill2);
-
 
     int Skill::getID() const {
         return ID;
