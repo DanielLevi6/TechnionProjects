@@ -5,7 +5,7 @@
 
 namespace mtm {
 
-	class city {
+	class City {
 
 	public:
 

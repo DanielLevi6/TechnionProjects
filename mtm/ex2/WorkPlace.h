@@ -1,10 +1,12 @@
 #ifndef WORK_PLACE_H_
 #define WORK_PLACE_H_
 
-#include <vector>
+#include <set>
+#include <iterator>
+#include <algorithm>
 #include <string>
 #include <iostream>
-
+#include "Manager.h"
 
 namespace mtm {
 	class WorkPlace {
@@ -14,7 +16,7 @@ namespace mtm {
 		unsigned int workers_salaries;
 		unsigned int managers_salaries;
 
-		std::vector<Manager*> managers;
+		std::set<Manager*> managers;
 
 	public:
 
@@ -31,7 +33,19 @@ namespace mtm {
 
 		unsigned int getManagersSalary() { return managers_salaries; }
 
-		bool hireEmployee(CondFunction, Condition, Employee* new_employee, unsigned int manager_id);
+		template <typename Condition>
+		bool hireEmployee(Condition condition, Employee* new_employee, unsigned int manager_id)
+		{
+			if (!condition(new_employee)/*Maybe need to get Employee and not Employee* */) {
+				throw EmployeeNotSelected();
+			}
+			Manager copy(manager_id);
+			std::iterator<std::set<Manager*>,Manager*> copy_iter = managers.find(copy);
+			if (!copy_iter) {
+				throw ManagerIsNotHired();
+			}
+			if(copy_iter
+		}
 
 		bool hireManager(Manager* new_manager);
 
