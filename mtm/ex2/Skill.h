@@ -17,8 +17,10 @@ namespace mtm {
         unsigned int strongLevel;
 
     public:
-        Skill(int ID, string name, unsigned int requiredPoints, unsigned int strongLevel)
+        Skill(int ID, string name, unsigned int requiredPoints, unsigned int strongLevel=0)
                 : ID(ID), name(name), requiredPoints(requiredPoints), strongLevel(strongLevel) {}
+
+        Skill(const Skill& to_copy) = default;
 
         int getID() const;
 
@@ -28,17 +30,22 @@ namespace mtm {
 
         friend ostream &operator<<(ostream &, const Skill &);
 
-        friend bool operator<(const Skill &, const Skill &);
-
-        friend bool operator==(const Skill &, const Skill &);
-
         Skill &operator++();
 
         Skill &operator+=(const int posPoints);
 
         Skill &operator+(const int posPoints);
 
+        friend bool operator<(const Skill&, const Skill&);
+        
+        friend bool operator==(const Skill&, const Skill&);
+
     };
+
+    bool operator<(const Skill&, const Skill&);
+
+    bool operator==(const Skill&, const Skill&);
+
     bool operator>(const Skill &skill1, const Skill &skill2);
 
     bool operator<=(const Skill &skill1, const Skill &skill2);

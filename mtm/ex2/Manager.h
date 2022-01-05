@@ -5,68 +5,54 @@
 #include <string>
 #include <iostream>
 #include "Citizen.h"
-#include "Exception.h"
+#include "Employee.h"
+#include "exceptions.h" //Maybe exception and not exceptions
 
 namespace mtm {
 
 	class Manager : public Citizen {
 
 		unsigned int salary;
+		bool hired;
 		std::set<Employee> employees;
 
 	public:
 
-		Manager(unsigned int id, std::string first_name="", std::string last_name="", unsigned int birth_year=0) :
-			Citizen(id, first_name, last_name, birth_year), salary(0) { }
+		Manager(unsigned int id, std::string first_name, std::string last_name, unsigned int birth_year) :
+			Citizen(id, first_name, last_name, birth_year), salary(0), hired(false) { }
 
-		Manager(Manager& to_copy) = default;
+		Manager(const Manager& to_copy) : Citizen(to_copy.getId(),to_copy.getFirstName(),to_copy.getLastName(),to_copy.getBirthYear()), salary(to_copy.salary), hired(to_copy.hired), employees(to_copy.employees)
+		{ }
 
 		~Manager() {}
 
+		unsigned int getSalary() const;
 
-		unsigned int getSalary() { return getSalary(); }
+		void addEmployee(Employee* new_employee);
 
-		void addEmployee(Employee* new_employee) {
-			if (!Employee) {
-				throw NullArgument();
-			}
+		void removeEmployee(unsigned int id);
 
-			if (employees.find(new_employee)) {
-				throw EmployeeAlreadyHired();
-			}
-			employees.insert(new_employee);
-		}
+		void setSalary(unsigned int added_salary);
 
-		void removeEmployee(unsigned int id) {
-			Employee employee_to_compare(id);
-			if (!employees.find(employee_to_compare)) {
-				throw EmployeeNotHired();
-			}
-			employees.erase(employee_to_compare);
-		}
+		bool checkIfEmployeeExist(Employee* new_employee) const;
 
-		void setSalary(unsigned int added_salary)
-		{
-			this->salary += added_salary;
-		}
+		bool isHired() const;
 
-		Manager* clone()
-		{
-			return new Manager(*this);
-		}
+		Manager* clone() const override;
+
+		bool operator==(Manager to_compare);
+
+		bool employeeIsInManager(unsigned int employee_id) const;
+
+		ostream& printShort(ostream& stream) const override;
+
+		ostream& printLong(ostream& stream) const override;
+
+		friend std::ostream& operator<<(std::ostream& stream, Manager& to_print);
+
 	};
 
-	std::ostream printShort(std::ostream stream, Manager manager)
-	{
-		return << "Short_Print" << manager.getFirstName() << " " << manager.getLastName() << std::endl << "Salary: " << manager.getSalary() << std::endl;
-	}
-
-	std::ostream printLong(std::ostream stream, Manager manager)
-	{
-		return << "Long Print" << manager.getFirstName() << " " << manager.getLastName() << std::endl << "id: " << manager.getId() << "birth_year: " << manager.getBirthYear() << std::endl << "Salary: " << manager.getSalary() << endl;
-	}
-
-
+	std::ostream& operator<<(std::ostream& stream, Manager& to_print);
 
 
 

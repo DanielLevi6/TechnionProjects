@@ -18,14 +18,6 @@ namespace mtm {
         return os << skill.name << " level: " << skill.strongLevel << std::endl;
     }
 
-    bool operator<(const Skill &skill1, const Skill &skill2) {
-        return skill1.ID < skill2.ID;
-    }
-
-    bool operator==(const Skill &skill1, const Skill &skill2) {
-        return skill1.ID < skill2.ID;
-    }
-
     Skill &Skill::operator++() {
         this->requiredPoints += 1;
         return *this;
@@ -48,12 +40,20 @@ namespace mtm {
         return *this;
     }
 
+    bool operator<(const Skill& skill1, const Skill& skill2) {
+        return skill1.ID < skill2.ID;
+    }
+
+    bool operator==(const Skill& skill1, const Skill& skill2) {
+        return skill1.ID == skill2.ID;
+    }
+
     bool operator>(const Skill &skill1, const Skill &skill2) {
-        return skill2 < skill1;
+        return skill1.getID() > skill2.getID();
     }
 
     bool operator<=(const Skill &skill1, const Skill &skill2) {
-        return !(skill2 < skill1);
+        return !(skill1 > skill2);
     }
 
     bool operator>=(const Skill &skill1, const Skill &skill2) {

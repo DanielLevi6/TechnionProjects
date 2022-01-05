@@ -2,7 +2,7 @@
 
 namespace mtm {
 
-    unsigned int Citizen::getID() const {
+    unsigned int Citizen::getId() const {
         return this->ID;
     }
 
@@ -18,27 +18,27 @@ namespace mtm {
         return this->birthYear;
     }
 
-    bool operator<(const Citizen &citizen1, const Citizen &citizen2) {
-        return citizen1.ID < citizen2.ID;
+    bool Citizen::operator<(const Citizen &citizen2) const {
+        return this->ID < citizen2.ID;
     }
 
-    bool operator==(const Citizen &citizen1, const Citizen &citizen2) {
-        return citizen1.ID == citizen2.ID;
+    bool Citizen::operator==(const Citizen &citizen2) const {
+        return this->ID == citizen2.ID;
     }
 
-    bool operator>(const Citizen &citizen1, const Citizen &citizen2) {
-        return citizen2 < citizen1;
+    bool Citizen::operator>(const Citizen &citizen2) const {
+        return !(*this < citizen2 || *this == citizen2);
     }
 
-    bool operator<=(const Citizen &citizen1, const Citizen &citizen2) {
-        return !(citizen2 < citizen1);
+    bool Citizen::operator<=(const Citizen &citizen2) const {
+        return !(*this > citizen2);
     }
 
-    bool operator>=(const Citizen &citizen1, const Citizen &citizen2) {
-        return !(citizen1 < citizen2);
+    bool Citizen::operator>=(const Citizen &citizen2) const {
+        return !(*this < citizen2);
     }
 
-    bool operator!=(const Citizen &citizen1, const Citizen &citizen2) {
-        return !(citizen1 == citizen2);
+    bool Citizen::operator!=(const Citizen &citizen2) const {
+        return !(*this == citizen2);
     }
 }

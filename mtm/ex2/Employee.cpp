@@ -55,13 +55,13 @@ namespace mtm {
         this->score += add_score;
     }
 
-    ostream &Employee::printShort(ostream &os = cout) {
+    ostream &Employee::printShort(ostream &os = cout) const {
         return os << "\n" << getFirstName() << " " << getLastName() << endl;
     }
 
-    ostream &Employee::printLong(ostream &os = cout) {
+    ostream &Employee::printLong(ostream &os = cout) const {
         os << "\n" << getFirstName() << " " << getLastName() <<
-           "\nid - " << getID() << " birth_year - " << getBirthYear() <<
+           "\nid - " << getId() << " birth_year - " << getBirthYear() <<
            "\nSalary: " << getSalary() << " Score: " << getScore() <<
            " Skills:\n" << endl;
         for (const auto & s : skill) {
@@ -72,5 +72,10 @@ namespace mtm {
 
     Employee *Employee::clone() const {
         return new Employee(*this);
+    }
+
+    std::ostream& operator<<(std::ostream& stream, Employee& to_print)
+    {
+        return stream << to_print.getFirstName() << " " << to_print.getLastName() << std::endl << "Salary: " << to_print.getSalary() << " Score: " << to_print.getScore() << std::endl;
     }
 }

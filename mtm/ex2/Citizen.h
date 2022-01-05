@@ -19,9 +19,11 @@ namespace mtm {
         Citizen(unsigned int ID, string firstName, string lastName, unsigned int birthYear)
                 : ID(ID), firstName(firstName), lastName(lastName), birthYear(birthYear) {}
 
+        Citizen(const Citizen& to_copy) : ID(to_copy.ID), firstName(to_copy.firstName), lastName(to_copy.lastName), birthYear(to_copy.birthYear) { }
+
         virtual ~Citizen() {}
 
-        unsigned int getID() const;
+        unsigned int getId() const;
 
         string getFirstName() const;
 
@@ -29,23 +31,31 @@ namespace mtm {
 
         unsigned int getBirthYear() const;
 
-        friend bool operator<(const Citizen &, const Citizen &);
+        virtual ostream& printShort(ostream &) const = 0;
 
-        friend bool operator==(const Citizen &, const Citizen &);
-
-        virtual ostream &printShort(ostream &) = 0;
-
-        virtual ostream &printLong(ostream &) = 0;
+        virtual ostream& printLong(ostream &) const = 0;
 
         virtual Citizen *clone() const = 0;
+
+        bool operator<(const Citizen&) const;
+
+        bool operator==(const Citizen&) const;
+
+        bool operator>(const Citizen&) const;
+
+        bool operator<=(const Citizen&) const;
+
+        bool operator>=(const Citizen&) const;
+
+        bool operator!=(const Citizen&) const;
     };
 
-    bool operator>(const Citizen &citizen1, const Citizen &citizen2);
+    /*bool operator>(const Citizen &citizen1, const Citizen &citizen2);
 
     bool operator<=(const Citizen &citizen1, const Citizen &citizen2);
 
     bool operator>=(const Citizen &citizen1, const Citizen &citizen2);
 
-    bool operator!=(const Citizen &citizen1, const Citizen &citizen2);
+    bool operator!=(const Citizen &citizen1, const Citizen &citizen2);*/
 }
 #endif //EX2_CITIZEN_H

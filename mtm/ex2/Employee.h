@@ -22,11 +22,11 @@ namespace mtm {
 
     public:
         Employee(unsigned int ID, string firstName, string lastName, unsigned int birthYear)
-                : Citizen(ID, firstName, lastName, birthYear) {
-            this->salary = 0;
-            this->score = 0;
+                : Citizen(ID, firstName, lastName, birthYear), salary(0), score(0) {
             skill.clear();
         }
+
+        Employee(const Employee& to_copy) = default;
 
         ~Employee() override = default;
 
@@ -44,13 +44,16 @@ namespace mtm {
 
         void setScore(int add_score);
 
-        ostream &printShort(ostream &) override;
+        ostream &printShort(ostream &) const override;
 
-        ostream &printLong(ostream &) override;
+        ostream &printLong(ostream &) const override;
 
         Employee *clone() const override;
 
+        friend std::ostream& operator<<(std::ostream& stream, Employee& to_print);
     };
+
+    std::ostream& operator<<(std::ostream& stream, Employee& to_print);
 }
 #endif //EX2_EMPLOYEE_H
 

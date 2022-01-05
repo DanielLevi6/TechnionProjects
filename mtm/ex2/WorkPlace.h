@@ -7,6 +7,8 @@
 #include <string>
 #include <iostream>
 #include "Manager.h"
+#include "Faculty.h"
+#include "Employee.h"
 
 namespace mtm {
 	class WorkPlace {
@@ -20,42 +22,65 @@ namespace mtm {
 
 	public:
 
-		WorkPlace(unsigned int id, std::string workplace_name, unsigned int workers_salaries, unsigned int managers_salaries) :
+		WorkPlace(unsigned int workplace_id, std::string workplace_name, unsigned int workers_salaries, unsigned int managers_salaries) :
 			workplace_id(workplace_id), workplace_name(workplace_name), workers_salaries(workers_salaries), managers_salaries(managers_salaries) {}
 
 		~WorkPlace() {}
 
-		unsigned int getID() { return workplace_id; }
+		unsigned int getID();
 
-		std::string getName() { return workplace_name; }
+		std::string getName();
 
-		unsigned int getWorkersSalary() { return workers_salaries; }
+		unsigned int getWorkersSalary();
 
-		unsigned int getManagersSalary() { return managers_salaries; }
+		unsigned int getManagersSalary();
 
-		template <typename Condition>
-		bool hireEmployee(Condition condition, Employee* new_employee, unsigned int manager_id)
-		{
-			if (!condition(new_employee)/*Maybe need to get Employee and not Employee* */) {
-				throw EmployeeNotSelected();
-			}
-			Manager copy(manager_id);
-			std::iterator<std::set<Manager*>,Manager*> copy_iter = managers.find(copy);
-			if (!copy_iter) {
-				throw ManagerIsNotHired();
-			}
-			if(copy_iter
-		}
+		template <typename T>
+		bool hireEmployee(T condition, Employee* new_employee, unsigned int manager_id);
 
 		bool hireManager(Manager* new_manager);
 
-		bool fireEmployee(unsigned int worker_id, unsigned int manager_id);
+		void fireEmployee(unsigned int worker_id, unsigned int manager_id);
 
-		bool fireManager(unsigned int manager_id);
+		void fireManager(unsigned int manager_id);
 
-		std::ostream& operator<<(WorkPlace& to_print);
+		bool operator==(const WorkPlace& to_compare) const;
+
+		bool employeeIsInWorkplace(unsigned int employee_id) const;
+
+		bool operator<(const WorkPlace& to_compare) const;
+
+		friend std::ostream& operator<<(std::ostream& stream, WorkPlace& to_print);
 
 	};
+	
+	std::ostream& operator<<(std::ostream& stream, WorkPlace& to_print);
+
+
+	template <typename T>
+	bool WorkPlace::hireEmployee(T condition, Employee* new_employee, unsigned int manager_id)
+	{
+		if (!condition(new_employee)/*Maybe need to get Employee and not Employee* */) {
+			throw EmployeeNotSelected();
+		}
+
+		for (Manager* manager_iter : managers)
+		{
+			if (manager_iter->getId() == manager_id)
+			{
+				if (manager_iter->employeeIsInManager(new_employee->getId()))
+				{
+					throw EmployeeAlreadyHired();
+				}
+
+				manager_iter->addEmployee(new_employee);
+				return true;
+			}
+		}
+
+		throw ManagerIsNotHired();
+
+	}
 
 }
 

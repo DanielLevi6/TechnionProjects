@@ -43,6 +43,111 @@ namespace mtm {
 
         const std::string what();
     };
+
+    class EmployeeAlreadyHired : public Exception {
+    public:
+        EmployeeAlreadyHired() = default;
+
+        const std::string what();
+    };
+
+    class EmployeeNotSelected : public Exception {
+    public:
+        EmployeeNotSelected() = default;
+
+        const std::string what();
+    };
+
+    class ManagerIsNotHired : public Exception {
+    public:
+        ManagerIsNotHired() = default;
+
+        const std::string what();
+    };
+
+    class ManagerAlreadyHired : public Exception {
+    public:
+        ManagerAlreadyHired() = default;
+
+        const std::string what();
+    };
+
+    class CanNotHireManager : public Exception {
+    public:
+        CanNotHireManager() = default;
+
+        const std::string what();
+    };
+
+    class EmployeeIsNotHired : public Exception {
+    public:
+        EmployeeIsNotHired() = default;
+
+        const std::string what();
+    };
+
+    class EmployeeNotAccepted : public Exception {
+    public:
+        EmployeeNotAccepted() = default;
+
+        const std::string what();
+    };
+
+    class EmployeeAlreadyExists : public Exception {
+    public:
+        EmployeeAlreadyExists() = default;
+
+        const std::string what();
+    };
+
+    class ManagerAlreadyExists : public Exception {
+    public:
+        ManagerAlreadyExists() = default;
+
+        const std::string what();
+    };
+
+    class FacultyAlreadyExists : public Exception {
+    public:
+        FacultyAlreadyExists() = default;
+
+        const std::string what();
+    };
+
+    class WorkplaceAlreadyExists : public Exception {
+    public:
+        WorkplaceAlreadyExists() = default;
+
+        const std::string what();
+    };
+
+    class EmployeeDoesNotExist : public Exception {
+    public:
+        EmployeeDoesNotExist() = default;
+
+        const std::string what();
+    };
+
+    class FacultyDoesNotExist : public Exception {
+    public:
+        FacultyDoesNotExist() = default;
+
+        const std::string what();
+    };
+
+    class ManagerDoesNotExist : public Exception {
+    public:
+        ManagerDoesNotExist() = default;
+
+        const std::string what();
+    };
+
+    class WorkplaceDoesNotExist : public Exception {
+    public:
+        WorkplaceDoesNotExist() = default;
+
+        const std::string what();
+    };
 }
 
 #endif /* EXCEPTIONS_H */
