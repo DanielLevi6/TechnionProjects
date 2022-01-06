@@ -21,7 +21,7 @@ namespace mtm {
 		std::set<Manager*> managers; //maybe needs a sorted structure
 		std::set<Employee*> employees; //maybe needs a sorted structure
 		std::set<Faculty<Condition>> faculties;
-		std::set<WorkPlace> workplaces;
+		std::set<WorkPlace*> workplaces;
 
 	public:
 
@@ -48,7 +48,7 @@ namespace mtm {
 
 		void fireManagerAtWorkplace(unsigned int manager_id, unsigned int workplace_id);
 
-		void getAllAboveSalary(ostream& stream, unsigned int min_salary);
+		int getAllAboveSalary(ostream& stream, unsigned int min_salary);
 
 		bool isWorkingInTheSameWorkplace(unsigned int employee1_id, unsigned int employee2_id);
 
@@ -68,11 +68,11 @@ namespace mtm {
 				{
 					if (manager_iter->getId() == manager_id)
 					{
-						for (WorkPlace workplace_iter : workplaces)
+						for (WorkPlace* workplace_iter : workplaces)
 						{
-							if (workplace_iter.getID() == workplace_id)
-							{
-								workplace_iter.hireEmployee(hire_condition, employee_iter, manager_id);
+							if (workplace_iter->getID() == workplace_id)
+							{				  
+								workplace_iter->hireEmployee(hire_condition, employee_iter, manager_id);
 								return;
 							}
 						}

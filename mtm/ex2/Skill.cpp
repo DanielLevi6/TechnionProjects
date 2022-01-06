@@ -2,7 +2,7 @@
 
 namespace mtm {
 
-    int Skill::getID() const {
+    int Skill::getId() const {
         return ID;
     }
 
@@ -15,29 +15,55 @@ namespace mtm {
     }
 
     ostream &operator<<(ostream &os, const Skill &skill) {
-        return os << skill.name << " level: " << skill.strongLevel << std::endl;
+        return os << skill.name << std::endl;
     }
 
-    Skill &Skill::operator++() {
+    Skill Skill::operator++(int) {
+        Skill copy = *this;
         this->requiredPoints += 1;
-        return *this;
+        return copy;
     }
 
     Skill &Skill::operator+=(const int posPoints) {
         if (posPoints < 0) {
             throw NegativePoints();
         }
+
         this->requiredPoints += posPoints;
         return *this;
     }
 
-    Skill &Skill::operator+(const int posPoints) {
-        if (posPoints < 0) {
+    //Skill &Skill::operator+(const int posPoints) {
+    //    if (posPoints < 0) {
+    //        throw NegativePoints();
+    //    }
+
+    //    this->requiredPoints += posPoints;
+    //    return *this;
+    //}
+
+    Skill operator+(const Skill& skill, int points)
+    {
+        if (points < 0) {
             throw NegativePoints();
         }
 
-        this->requiredPoints += posPoints;
-        return *this;
+        Skill result(skill);
+        result.requiredPoints += points;
+
+        return result;
+    }
+
+    Skill operator+(int points, const Skill& skill)
+    {
+        if (points < 0) {
+            throw NegativePoints();
+        }
+
+        Skill result(skill);
+        result.requiredPoints += points;
+
+        return result;
     }
 
     bool operator<(const Skill& skill1, const Skill& skill2) {
@@ -49,7 +75,7 @@ namespace mtm {
     }
 
     bool operator>(const Skill &skill1, const Skill &skill2) {
-        return skill1.getID() > skill2.getID();
+        return skill1.getId() > skill2.getId();
     }
 
     bool operator<=(const Skill &skill1, const Skill &skill2) {

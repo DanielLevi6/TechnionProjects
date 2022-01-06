@@ -16,14 +16,14 @@ namespace mtm {
 	class Faculty {
 
 		unsigned int faculty_id;
-		T* condition;
 		Skill acquired_skill;
 		unsigned int added_points;
+		T* condition;
 
 	public:
 
 		template <class T>
-		Faculty(unsigned int faculty_id, T* condition, Skill& acquired_skill, unsigned int added_points) :faculty_id(faculty_id), condition(condition), acquired_skill(acquired_skill), added_points(added_points) {}
+		Faculty(unsigned int faculty_id, Skill& acquired_skill, unsigned int added_points, T* condition) :faculty_id(faculty_id), condition(condition), acquired_skill(acquired_skill), added_points(added_points) {}
 
 		Faculty(const Faculty& to_copy) = default;
 
@@ -35,7 +35,7 @@ namespace mtm {
 
 		unsigned int getAddedPoints() const;
 
-		void teach(Employee& candidate) const;
+		void teach(Employee* candidate) const;
 
 		bool operator==(const Faculty& to_compare) const;
 
@@ -62,13 +62,14 @@ namespace mtm {
 	}
 
 	template <class T>
-	void Faculty<T>::teach(Employee& candidate) const
+	void Faculty<T>::teach(Employee* candidate) const
 	{
-		if (!(*this->condition)(&candidate)) {
+		if (!(*this->condition)(candidate)) {
 			throw EmployeeNotAccepted();
 		}
 
-		candidate.learnSkill(this->acquired_skill);
+		candidate->learnSkill(this->acquired_skill);
+		candidate->setScore(this->added_points);
 	}
 
 	template <class T>

@@ -22,7 +22,7 @@ namespace mtm {
 
         Skill(const Skill& to_copy) = default;
 
-        int getID() const;
+        int getId() const;
 
         string getName() const;
 
@@ -30,17 +30,27 @@ namespace mtm {
 
         friend ostream &operator<<(ostream &, const Skill &);
 
-        Skill &operator++();
+        Skill operator++(int);
 
         Skill &operator+=(const int posPoints);
 
-        Skill &operator+(const int posPoints);
+        //Skill &operator+(const int posPoints);
 
         friend bool operator<(const Skill&, const Skill&);
         
         friend bool operator==(const Skill&, const Skill&);
 
+        friend Skill operator+(const Skill& skill, int points);
+
+        friend Skill operator+(int points, const Skill& skill);
+
     };
+
+    ostream& operator<<(ostream&, const Skill&);
+
+    Skill operator+(const Skill& skill, int points);
+
+    Skill operator+(int points, const Skill& skill);
 
     bool operator<(const Skill&, const Skill&);
 

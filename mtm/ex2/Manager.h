@@ -12,9 +12,9 @@ namespace mtm {
 
 	class Manager : public Citizen {
 
-		unsigned int salary;
+		int salary;
 		bool hired;
-		std::set<Employee> employees;
+		std::set<Employee*> employees;
 
 	public:
 
@@ -26,7 +26,7 @@ namespace mtm {
 
 		~Manager() {}
 
-		unsigned int getSalary() const;
+		int getSalary() const;
 
 		void addEmployee(Employee* new_employee);
 

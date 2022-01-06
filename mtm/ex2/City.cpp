@@ -37,19 +37,19 @@ namespace mtm {
 			}
 		}
 
-		faculties.insert(Faculty<Condition>(faculty_id,condition,acquired_skill,added_points));
+		faculties.insert(Faculty<Condition>(faculty_id,acquired_skill,added_points, condition));
 	}
 
 	void City::createWorkplace(unsigned int workplace_id, std::string workplace_name, unsigned int workers_salaries, unsigned int managers_salaries)
 	{
 		WorkPlace* new_workplace = new WorkPlace(workplace_id, workplace_name, workers_salaries, managers_salaries);
-		for (WorkPlace iter : workplaces) {
-			if (iter == *new_workplace) {
+		for (WorkPlace* iter : workplaces) {
+			if (*iter == *new_workplace) {
 				throw WorkplaceAlreadyExists();
 			}
 		}
 
-		workplaces.insert(*new_workplace);
+		workplaces.insert(new_workplace);
 	}
 
 	void City::teachAtFaculty(unsigned int employee_id, unsigned int faculty_id)
@@ -58,7 +58,8 @@ namespace mtm {
 			if (employee_iter->getId() == employee_id) {
 				for (const Faculty<Condition>& faculty_iter : faculties) {
 					if (faculty_iter.getId() == faculty_id) {
-						faculty_iter.teach(*employee_iter);
+						faculty_iter.teach(employee_iter);
+						employee_iter->setScore(employee_iter->getScore() + faculty_iter.getAddedPoints());
 						return;
 					}
 				}
@@ -76,11 +77,11 @@ namespace mtm {
 		{
 			if (manager_iter->getId() == manager_id)
 			{
-				for (WorkPlace workplace_iter : workplaces)
+				for (WorkPlace* workplace_iter : workplaces)
 				{
-					if (workplace_iter.getID() == workplace_id)
+					if (workplace_iter->getID() == workplace_id)
 					{
-						workplace_iter.hireManager((Manager*)manager_iter);
+						workplace_iter->hireManager((Manager*)manager_iter);
 						return;
 					}
 				}
@@ -102,11 +103,12 @@ namespace mtm {
 				{
 					if (manager_iter->getId() == manager_id)
 					{
-						for (WorkPlace workplace_iter : workplaces)
+						for (WorkPlace* workplace_iter : workplaces)
 						{
-							if (workplace_iter.getID() == workplace_id)
+							if (workplace_iter->getID() == workplace_id)
 							{
-								workplace_iter.fireEmployee(employee_id, manager_id);
+								workplace_iter->fireEmployee(employee_id, manager_id);
+								return;
 							}
 						}
 
@@ -127,11 +129,12 @@ namespace mtm {
 		{
 			if (manager_iter->getId() == manager_id)
 			{
-				for (WorkPlace workplace_iter : workplaces)
+				for (WorkPlace* workplace_iter : workplaces)
 				{
-					if (workplace_iter.getID() == workplace_id)
+					if (workplace_iter->getID() == workplace_id)
 					{
-						workplace_iter.fireManager(manager_id);
+						workplace_iter->fireManager(manager_id);
+						return;
 					}
 				}
 
@@ -143,30 +146,36 @@ namespace mtm {
 	}
 
 
-	void City::getAllAboveSalary(ostream& stream, unsigned int min_salary)
+	int City::getAllAboveSalary(ostream& stream, unsigned int min_salary)
 	{
 		set<Manager*>::iterator manager_iter = managers.begin();
 		set<Employee*>::iterator employee_iter = employees.begin();
 
+		int counter = 0;
+
 		while (manager_iter!=managers.end() || employee_iter!=employees.end())
 		{
-			if (/*if iterator is nullptr??*/(*manager_iter)->getId() < (*employee_iter)->getId())
+			if (/*if iterator is nullptr??*/employee_iter == employees.end() || manager_iter != managers.end() && (*manager_iter)->getId() < (*employee_iter)->getId())
 			{
-				if ((*manager_iter)->getSalary() == min_salary)
+				if ((*manager_iter)->getSalary() >= min_salary)
 				{
 					(*manager_iter)->printShort(stream);
+					++counter;
 				}
 				manager_iter++;
 			}
 			else
 			{
-				if ((*employee_iter)->getSalary() == min_salary)
+				if (employee_iter != employees.end() && (*employee_iter)->getSalary() == min_salary)
 				{
 					(*employee_iter)->printShort(stream);
+					++counter;
 				}
 				employee_iter++;
 			}
 		}
+
+		return counter;
 	}
 
 	bool City::isWorkingInTheSameWorkplace(unsigned int employee1_id, unsigned int employee2_id)
@@ -194,10 +203,10 @@ namespace mtm {
 		bool employee1_in_workplace = false;
 		bool employee2_in_workplace = false;
 
-		for (const WorkPlace& workplace_iter : workplaces)
+		for (WorkPlace* workplace_iter : workplaces)
 		{
-			employee1_in_workplace = workplace_iter.employeeIsInWorkplace(employee1_id);
-			employee2_in_workplace = workplace_iter.employeeIsInWorkplace(employee2_id);
+			employee1_in_workplace = workplace_iter->employeeIsInWorkplace(employee1_id);
+			employee2_in_workplace = workplace_iter->employeeIsInWorkplace(employee2_id);
 
 			if (employee1_in_workplace && employee2_in_workplace)
 			{

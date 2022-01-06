@@ -27,13 +27,13 @@ namespace mtm {
 
 		~WorkPlace() {}
 
-		unsigned int getID();
+		unsigned int getID() const;
 
-		std::string getName();
+		std::string getName() const;
 
-		unsigned int getWorkersSalary();
+		unsigned int getWorkersSalary() const;
 
-		unsigned int getManagersSalary();
+		unsigned int getManagersSalary() const;
 
 		template <typename T>
 		bool hireEmployee(T condition, Employee* new_employee, unsigned int manager_id);
@@ -50,11 +50,11 @@ namespace mtm {
 
 		bool operator<(const WorkPlace& to_compare) const;
 
-		friend std::ostream& operator<<(std::ostream& stream, WorkPlace& to_print);
+		friend std::ostream& operator<<(std::ostream& stream, const WorkPlace& to_print);
 
 	};
 	
-	std::ostream& operator<<(std::ostream& stream, WorkPlace& to_print);
+	std::ostream& operator<<(std::ostream& stream, const WorkPlace& to_print);
 
 
 	template <typename T>
@@ -74,6 +74,7 @@ namespace mtm {
 				}
 
 				manager_iter->addEmployee(new_employee);
+				new_employee->setSalary(this->workers_salaries);
 				return true;
 			}
 		}

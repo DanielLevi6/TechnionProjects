@@ -14,7 +14,7 @@ using std::set;
 
 namespace mtm {
     class Employee : public Citizen {
-        unsigned int salary;
+        int salary;
         int score;
         set<Skill> skill;
 
@@ -34,9 +34,9 @@ namespace mtm {
 
         int getScore() const;
 
-        void learnSkill(Skill new_skill);
+        void learnSkill(const Skill& new_skill);
 
-        void forgetSkill(const Skill &to_forget_skill);
+        void forgetSkill(int skill_id);
 
         bool hasSkill(unsigned int ID) const;
 
@@ -49,6 +49,10 @@ namespace mtm {
         ostream &printLong(ostream &) const override;
 
         Employee *clone() const override;
+
+        bool operator<(const Employee& to_compare);
+
+        bool operator==(const Employee& to_compare);
 
         friend std::ostream& operator<<(std::ostream& stream, Employee& to_print);
     };

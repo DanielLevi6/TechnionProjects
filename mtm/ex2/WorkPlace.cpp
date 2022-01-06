@@ -2,22 +2,22 @@
 
 namespace mtm {
 
-	unsigned int WorkPlace::getID() 
+	unsigned int WorkPlace::getID() const 
 	{ 
 		return workplace_id; 
 	}
 
-	std::string WorkPlace::getName() 
+	std::string WorkPlace::getName() const
 	{
 		return workplace_name; 
 	}
 
-	unsigned int WorkPlace::getWorkersSalary() 
+	unsigned int WorkPlace::getWorkersSalary() const
 	{ 
 		return workers_salaries; 
 	}
 
-	unsigned int WorkPlace::getManagersSalary() 
+	unsigned int WorkPlace::getManagersSalary() const
 	{ 
 		return managers_salaries; 
 	}
@@ -30,11 +30,13 @@ namespace mtm {
 			}
 		}
 
-		if (new_manager->isHired()) {
+		if (new_manager->isHired() || new_manager->getSalary() > 0) {
 			throw CanNotHireManager();
 		}
 
 		managers.insert(new_manager);
+		new_manager->setSalary(this->managers_salaries);
+		//delete the hired flag?
 
 		return true;
 	}
@@ -81,9 +83,15 @@ namespace mtm {
 		return false;
 	}
 
-	std::ostream& operator<<(std::ostream& stream, WorkPlace& to_print)
+	std::ostream& operator<<(std::ostream& stream, const WorkPlace& to_print)
 	{
-		stream << "Workplace name - " << to_print.getName() << std::endl;
+		stream << "Workplace name - " << to_print.getName();
+
+		if (!to_print.managers.empty())
+		{
+			stream << " Groups:" ;
+		}
+		stream << endl;
 		for (Manager* iter : to_print.managers) {
 			stream << *iter;
 		}

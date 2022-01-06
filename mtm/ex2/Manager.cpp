@@ -2,7 +2,7 @@
 
 namespace mtm {
 
-	unsigned int Manager::getSalary() const
+	int Manager::getSalary() const
 	{
 		return salary;
 	}
@@ -13,30 +13,43 @@ namespace mtm {
 			throw EmployeeAlreadyHired();
 		}
 
-		employees.insert(*new_employee);
+		employees.insert(new_employee);
 		
 		
 	}
 
 	void Manager::removeEmployee(unsigned int id)
 	{
-		Employee employee_to_compare(id,"","",0);
 		if (!employeeIsInManager(id)) {
 			throw EmployeeIsNotHired();
 		}
-		employees.erase(employee_to_compare);
+
+		for (Employee* employee_iter : employees)
+		{
+			if (employee_iter->getId() == id)
+			{
+				employees.erase(employee_iter);
+				break;
+			}
+		}
+		
 	}
 
 	void Manager::setSalary(unsigned int added_salary)
 	{
 		this->salary += added_salary;
+
+		if (this->salary < 0)
+		{
+			this->salary = 0;
+		}
 	}
 
 	bool Manager::checkIfEmployeeExist(Employee* new_employee) const
 	{
-		for (const Employee& manager_iter : employees)
+		for (Employee* employee_iter : employees)
 		{
-			if (manager_iter.getId() == new_employee->getId())
+			if (employee_iter->getId() == new_employee->getId())
 			{
 				return true;
 			}
@@ -62,9 +75,9 @@ namespace mtm {
 
 	bool Manager::employeeIsInManager(unsigned int employee_id) const //There iis a similar function
 	{
-		for (const Employee& manager_iter : employees)
+		for (Employee* employee_iter : employees)
 		{
-			if (manager_iter.getId() == employee_id)
+			if (employee_iter->getId() == employee_id)
 			{
 				return true;
 			}
@@ -75,19 +88,24 @@ namespace mtm {
 
 	std::ostream& Manager::printShort(std::ostream& stream) const
 	{
-		return stream << "Short_Print" << getFirstName() << " " << getLastName() << std::endl << "Salary: " << getSalary() << std::endl;
+		return stream << getFirstName() << " " << getLastName() << std::endl << "Salary: " << getSalary() << std::endl;
 	}
 
 	std::ostream& Manager::printLong(std::ostream& stream) const
 	{
-		return stream << "Long Print" << getFirstName() << " " << getLastName() << std::endl << "id: " << getId() << "birth_year: " << getBirthYear() << std::endl << "Salary: " << getSalary() << endl;
+		stream << getFirstName() << " " << getLastName() << std::endl << "id - " << getId() << " birth_year - " << getBirthYear() << std::endl << "Salary: " << getSalary() << std::endl << "Employees:" << std::endl;
+		for (Employee* iter : employees) {
+			stream << *iter;
+		}
+
+		return stream;
 	}
 
 	std::ostream& operator<<(std::ostream& stream, Manager& to_print)
 	{
 		stream << "Manager " << to_print.getFirstName() << " " << to_print.getLastName() << std::endl << "id - " << to_print.getId() << " birth_year - " << to_print.getBirthYear() << std::endl << "Salary: " << to_print.getSalary() << std::endl << "Employees:" << std::endl;
-		for (Employee iter : to_print.employees) {
-			stream << iter;
+		for (Employee* iter : to_print.employees) {
+			stream << *iter;
 		}
 
 		return stream;

@@ -18,60 +18,85 @@ namespace mtm {
         return false;
     }
 
-    void Employee::learnSkill(Skill new_skill) {
+    void Employee::learnSkill(const Skill& new_skill) {
         if (this->isLearned(new_skill)) {
             throw SkillAlreadyLearned();
         }
-            //what condition??
-        else if (false) {
+        //what condition??
+        else if (this->getScore() < new_skill.getRequiredPoints()) {
             throw CanNotLearnSkill();
         }
         this->skill.insert(new_skill);
     }
 
-    void Employee::forgetSkill(const Skill &to_forget_skill) {
-        if (this->isLearned(to_forget_skill)) {
-            this->skill.erase(to_forget_skill);
-        } else {
-            throw DidNotLearnSkill();
+    void Employee::forgetSkill(int skill_id) {
+        for (const Skill& skill_iter : skill)
+        {
+            if (skill_iter.getId()==skill_id && this->isLearned(skill_iter)) {
+                this->skill.erase(skill_iter);
+                return;
+            }
         }
+        throw DidNotLearnSkill();
     }
 
 
     bool Employee::hasSkill(unsigned int ID) const {
-        for (int i = skill.begin()->getID(); i != skill.end()->getID(); i++) {
-            if (i == ID) {
+        for (set<Skill>::iterator i = skill.begin(); i != skill.end(); i++) {
+            if (i->getId() == ID) {
                 return true;
             }
         }
         return false;
     }
 
-    void Employee::setSalary(int add_salary) {
+    void Employee::setSalary(int add_salary) 
+    {
         this->salary += add_salary;
+
+        if (this->salary < 0)
+        {
+            this->salary = 0;
+        }
     }
 
-    void Employee::setScore(int add_score) {
+    void Employee::setScore(int add_score) 
+    {
         this->score += add_score;
+
+        if (this->score < 0)
+        {
+            this->score = 0;
+        }
     }
 
     ostream &Employee::printShort(ostream &os = cout) const {
-        return os << "\n" << getFirstName() << " " << getLastName() << endl;
+        return os << getFirstName() << " " << getLastName() << endl << "Salary: " << getSalary() << " Score: " << getScore() << endl;
     }
 
     ostream &Employee::printLong(ostream &os = cout) const {
-        os << "\n" << getFirstName() << " " << getLastName() <<
-           "\nid - " << getId() << " birth_year - " << getBirthYear() <<
-           "\nSalary: " << getSalary() << " Score: " << getScore() <<
-           " Skills:\n" << endl;
+        os << getFirstName() << " " << getLastName() << endl << 
+           "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
+           "Salary: " << getSalary() << " Score: " << getScore() <<
+           " Skills:" << endl;
         for (const auto & s : skill) {
-            os << s.getName() << "\n" << endl;
+            os << s.getName() << endl;
         }
         return os;
     }
 
     Employee *Employee::clone() const {
         return new Employee(*this);
+    }
+
+    bool Employee::operator<(const Employee& to_compare)
+    {
+        return this->getId() < to_compare.getId();
+    }
+
+    bool Employee::operator==(const Employee& to_compare)
+    {
+        return this->getId() == to_compare.getId();
     }
 
     std::ostream& operator<<(std::ostream& stream, Employee& to_print)
