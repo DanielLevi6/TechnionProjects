@@ -1,0 +1,13 @@
+Programming with c++
+
+5
+EmployeeNotAccepted
+Print_Long
+Muhammad Ghanayem
+id - 90 birth_year - 1890
+Salary: 0 Score: 0 Skills:
+Print_Long_after_skill_teach
+Muhammad Ghanayem
+id - 90 birth_year - 1890
+Salary: 0 Score: 5 Skills:
+Programming with c++

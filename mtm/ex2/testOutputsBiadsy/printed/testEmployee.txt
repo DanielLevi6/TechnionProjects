@@ -1,0 +1,58 @@
+SkillAlreadyLearned
+CanNotLearnSkill
+DidNotLearnSkill
+Short Print
+John Williams
+Salary: 0 Score: 0
+Long Print
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+C++
+Java
+Long Print delete the last
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+C++
+Long Print again
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+Java
+Long Print again set salary
+John Williams
+id - 1 birth_year - 2002
+Salary: 40 Score: 0 Skills:
+Java
+John Williams
+id - 1 birth_year - 2002
+Salary: 40 Score: 0 Skills:
+Java
+Long Print again set score
+John Williams
+id - 1 birth_year - 2002
+Salary: 40 Score: 6 Skills:
+Java
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+Java
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+Java
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+Java
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+C++
+Java
+John Williams
+id - 1 birth_year - 2002
+Salary: 0 Score: 0 Skills:
+C++
+Java
