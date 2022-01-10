@@ -9,22 +9,32 @@ namespace mtm {
 	{
 		for (Employee* iter : employees) {
 			if ((*iter).getId() == ID) {
-				throw EmployeeAlreadyExists();
+				throw CitizenAlreadyExists();
 			}
 		}
+        for (Manager* m_iter : managers) {
+            if ((*m_iter).getId() == ID) {
+                throw CitizenAlreadyExists();
+            }
+        }
 
 		employees.insert(new Employee(ID, firstName, lastName, birthYear));
 	}
 
 	void City::addManager(unsigned int ID, string firstName, string lastName, unsigned int birthYear)
 	{
-		Manager* new_manager = new Manager(ID, firstName, lastName, birthYear);
+	    /**why new manager? never accessed*/
+		//Manager* new_manager = new Manager(ID, firstName, lastName, birthYear);
 		for (Manager* iter : managers) {
 			if ((*iter).getId() == ID) {
-				throw ManagerAlreadyExists();
+				throw CitizenAlreadyExists();
 			}
 		}
-
+        for (Employee* iter : employees) {
+            if ((*iter).getId() == ID) {
+                throw CitizenAlreadyExists();
+            }
+        }
 		managers.insert(new Manager(ID,firstName,lastName,birthYear));
 	}
 
@@ -42,14 +52,13 @@ namespace mtm {
 
 	void City::createWorkplace(unsigned int workplace_id, std::string workplace_name, unsigned int workers_salaries, unsigned int managers_salaries)
 	{
-		WorkPlace* new_workplace = new WorkPlace(workplace_id, workplace_name, workers_salaries, managers_salaries);
 		for (WorkPlace* iter : workplaces) {
-			if (*iter == *new_workplace) {
+			if (iter->getID() == workplace_id) {
 				throw WorkplaceAlreadyExists();
 			}
 		}
 
-		workplaces.insert(new_workplace);
+		workplaces.insert(new WorkPlace(workplace_id, workplace_name, workers_salaries, managers_salaries));
 	}
 
 	void City::teachAtFaculty(unsigned int employee_id, unsigned int faculty_id)
@@ -59,7 +68,7 @@ namespace mtm {
 				for (const Faculty<Condition>& faculty_iter : faculties) {
 					if (faculty_iter.getId() == faculty_id) {
 						faculty_iter.teach(employee_iter);
-						employee_iter->setScore(employee_iter->getScore() + faculty_iter.getAddedPoints());
+						//employee_iter->setScore(employee_iter->getScore() + faculty_iter.getAddedPoints());
 						return;
 					}
 				}
@@ -81,8 +90,17 @@ namespace mtm {
 				{
 					if (workplace_iter->getID() == workplace_id)
 					{
-						workplace_iter->hireManager((Manager*)manager_iter);
-						return;
+
+                        try{
+                            workplace_iter->hireManager(manager_iter);
+                        }
+                        catch(ManagerAlreadyHired&){
+                            ManagerAlreadyExists();
+                        }
+                        catch (CanNotHireManager&) {
+                            CanNotHireManager();
+                        }
+                        return;
 					}
 				}
 
@@ -108,7 +126,10 @@ namespace mtm {
 							if (workplace_iter->getID() == workplace_id)
 							{
 								workplace_iter->fireEmployee(employee_id, manager_id);
-								return;
+
+								//zero fired employee salary
+                                employee_iter->setSalary(-employee_iter->getSalary());
+                                return;
 							}
 						}
 
@@ -134,6 +155,11 @@ namespace mtm {
 					if (workplace_iter->getID() == workplace_id)
 					{
 						workplace_iter->fireManager(manager_id);
+						//zero his salary
+						manager_iter->setSalary(-manager_iter->getSalary());
+						//fire all his employees
+                        (*manager_iter).fireAllEmployees();
+
 						return;
 					}
 				}
@@ -148,8 +174,8 @@ namespace mtm {
 
 	int City::getAllAboveSalary(ostream& stream, unsigned int min_salary)
 	{
-		set<Manager*>::iterator manager_iter = managers.begin();
-		set<Employee*>::iterator employee_iter = employees.begin();
+		set<Manager*, ManagerComp>::iterator manager_iter = managers.begin();
+		set<Employee*, EmployeeComp>::iterator employee_iter = employees.begin();
 
 		int counter = 0;
 
@@ -166,7 +192,7 @@ namespace mtm {
 			}
 			else
 			{
-				if (employee_iter != employees.end() && (*employee_iter)->getSalary() == min_salary)
+				if (employee_iter != employees.end() && (*employee_iter)->getSalary() >= min_salary)
 				{
 					(*employee_iter)->printShort(stream);
 					++counter;
@@ -228,7 +254,7 @@ namespace mtm {
 		{
 			if (employee_iter->hasSkill(skill_id))
 			{
-				employee_iter->printLong(stream);
+				employee_iter->printShort(stream);
 			}
 		}
 	}

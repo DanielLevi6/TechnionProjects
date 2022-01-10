@@ -14,14 +14,21 @@
 
 namespace mtm {
 
+    class WorkPlaceComp {
+    public:
+        bool operator()(const WorkPlace *w1, const WorkPlace *w2) const {
+            return w1->getID() < w2->getID();
+        }
+    };
+
 	class City {
 
 		std::string city_name;
 
-		std::set<Manager*> managers; //maybe needs a sorted structure
-		std::set<Employee*> employees; //maybe needs a sorted structure
+		std::set<Manager*, ManagerComp> managers; //maybe needs a sorted structure
+		std::set<Employee*, EmployeeComp> employees; //maybe needs a sorted structure
 		std::set<Faculty<Condition>> faculties;
-		std::set<WorkPlace*> workplaces;
+		std::set<WorkPlace*, WorkPlaceComp> workplaces;
 
 	public:
 
@@ -87,14 +94,7 @@ namespace mtm {
 
 		throw EmployeeDoesNotExist();
 	}
-
-
-
-
-
-
-
-
+	
 }
 
 

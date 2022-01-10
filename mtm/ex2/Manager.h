@@ -10,11 +10,17 @@
 
 namespace mtm {
 
+    class EmployeeComp {
+    public:
+        bool operator()(const Employee *e1, const Employee *e2) const {
+            return e1->getId() < e2->getId();
+        }
+    };
 	class Manager : public Citizen {
 
 		int salary;
 		bool hired;
-		std::set<Employee*> employees;
+		std::set<Employee*, EmployeeComp> employees;
 
 	public:
 
@@ -50,10 +56,10 @@ namespace mtm {
 
 		friend std::ostream& operator<<(std::ostream& stream, Manager& to_print);
 
+		void fireAllEmployees();
 	};
 
 	std::ostream& operator<<(std::ostream& stream, Manager& to_print);
-
 
 
 }

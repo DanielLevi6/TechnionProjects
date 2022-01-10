@@ -68,9 +68,18 @@ namespace mtm {
 			throw EmployeeNotAccepted();
 		}
 
-		candidate->learnSkill(this->acquired_skill);
+		try {
+            candidate->learnSkill(this->acquired_skill);
+        }
+		catch(const SkillAlreadyLearned&){
+            return;
+		}
+        catch (const CanNotLearnSkill&) {
+            return;
+        }
+
 		candidate->setScore(this->added_points);
-	}
+    }
 
 	template <class T>
 	bool Faculty<T>::operator==(const Faculty& to_compare) const
@@ -83,9 +92,6 @@ namespace mtm {
 	{
 		return this->faculty_id < to_compare.faculty_id;
 	}
-
-
-
 
 }
 

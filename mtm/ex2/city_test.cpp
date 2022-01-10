@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Employee.h"
 #include "Manager.h"
+#include "Faculty.h"
 #include "WorkPlace.h"
 #include "City.h"
-#include <assert.h>
-#include "exceptions.h"
+
 using namespace mtm;
 using std::cout;
 using std::endl;

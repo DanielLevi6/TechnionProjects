@@ -75,12 +75,20 @@ namespace mtm {
     }
 
     ostream &Employee::printLong(ostream &os = cout) const {
-        os << getFirstName() << " " << getLastName() << endl << 
-           "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
-           "Salary: " << getSalary() << " Score: " << getScore() <<
-           " Skills:" << endl;
-        for (const auto & s : skill) {
-            os << s.getName() << endl;
+
+        if (this->skill.empty()){
+            os << getFirstName() << " " << getLastName() << endl <<
+               "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
+               "Salary: " << getSalary() << " Score: " << getScore() << endl;
+        }
+        else {
+            os << getFirstName() << " " << getLastName() << endl <<
+               "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
+               "Salary: " << getSalary() << " Score: " << getScore() <<
+               " Skills: "<< endl;
+            for (const auto &s : skill) {
+                os << s.getName() << endl;
+            }
         }
         return os;
     }

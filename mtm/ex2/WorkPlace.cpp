@@ -30,12 +30,11 @@ namespace mtm {
 			}
 		}
 
-		if (new_manager->isHired() || new_manager->getSalary() > 0) {
+		if (/*new_manager->isHired() ||*/ new_manager->getSalary() > 0) {
 			throw CanNotHireManager();
 		}
-
-		managers.insert(new_manager);
-		new_manager->setSalary(this->managers_salaries);
+        new_manager->setSalary(this->managers_salaries);
+		this->managers.insert(new_manager);
 		//delete the hired flag?
 
 		return true;
@@ -57,7 +56,8 @@ namespace mtm {
 	{
 		for (Manager* iter : managers) {
 			if (iter->getId() == manager_id) {
-				managers.erase(iter);
+				iter->setSalary(-iter->getSalary());
+			    managers.erase(iter);
 				return;
 			}
 		}
@@ -103,11 +103,5 @@ namespace mtm {
 	{
 		return this->workplace_id < to_compare.workplace_id;
 	}
-
-
-
-
-
-
 
 }

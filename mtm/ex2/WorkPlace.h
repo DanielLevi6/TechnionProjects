@@ -11,14 +11,22 @@
 #include "Employee.h"
 
 namespace mtm {
-	class WorkPlace {
+    class ManagerComp {
+    public:
+        bool operator()(const Manager *m1, const Manager *m2) const {
+            return m1->getId() < m2->getId();
+        }
+    };
+
+
+    class WorkPlace {
 
 		unsigned int workplace_id;
 		std::string workplace_name;
 		unsigned int workers_salaries;
 		unsigned int managers_salaries;
 
-		std::set<Manager*> managers;
+		std::set<Manager*, ManagerComp> managers;
 
 	public:
 
