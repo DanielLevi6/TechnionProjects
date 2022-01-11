@@ -1053,7 +1053,7 @@ bool testCitySegel()
     city.hireEmployeeAtWorkplace(hiringCondition, 12, 104, 10001);
     city.hireEmployeeAtWorkplace(hiringCondition, 13, 104, 10001);
     city.fireEmployeeAtWorkplace(12,104,10001);
-    out << "getAllAboveSalary output: " << endl;
+    out << "getAllAboveSalary output:" << endl;
     city.getAllAboveSalary(out,1000);
     out << endl << "printAllEmployeesWithSkill output" << endl;
     city.printAllEmployeesWithSkill(out, 1);

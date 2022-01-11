@@ -1,4 +1,4 @@
-etAllAboveSalary output:
+getAllAboveSalary output:
 John Williams
 Salary: 10000 Score: 25
 Lionel Smith

@@ -53,3 +53,15 @@ Lionel Smith
 Salary: 0 Score: 10
 Mohamad Masarwa
 Salary: 0
+Mohamad Masarwa
+Salary: 20000
+John Williams
+Salary: 10000 Score: 25
+Alex Martinez
+Salary: 10000 Score: 10
+Lionel Smith
+Salary: 10000 Score: 10
+Mohamad Masarwa
+Salary: 20000
+moshe moshe
+Salary: 20000

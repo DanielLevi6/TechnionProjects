@@ -78,8 +78,22 @@ namespace mtm {
 						for (WorkPlace* workplace_iter : workplaces)
 						{
 							if (workplace_iter->getID() == workplace_id)
-							{				  
-								workplace_iter->hireEmployee(hire_condition, employee_iter, manager_id);
+							{
+							    if(employee_iter->getSalary()){
+							        return;
+							    }
+								try{
+								    workplace_iter->hireEmployee(hire_condition, employee_iter, manager_id);
+								}
+                                catch (EmployeeAlreadyHired&) {
+                                    EmployeeAlreadyHired();
+                                    return;
+                                }
+                                catch (EmployeeNotSelected&) {
+                                    EmployeeNotSelected();
+                                    return;
+                                }
+								//employee_iter->setSalary(workplace_iter->getWorkersSalary());
 								return;
 							}
 						}

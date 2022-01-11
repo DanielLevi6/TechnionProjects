@@ -91,6 +91,7 @@ namespace mtm {
         for (Employee *employee_iter : employees) {
             employee_iter->setSalary(-employee_iter->getSalary());
         }
+        employees.clear();
     }
 
 

@@ -159,7 +159,7 @@ namespace mtm {
 						manager_iter->setSalary(-manager_iter->getSalary());
 						//fire all his employees
                         (*manager_iter).fireAllEmployees();
-
+                        
 						return;
 					}
 				}
