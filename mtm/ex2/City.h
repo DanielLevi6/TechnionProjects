@@ -59,7 +59,7 @@ namespace mtm {
 
 		bool isWorkingInTheSameWorkplace(unsigned int employee1_id, unsigned int employee2_id);
 
-		void City::printAllEmployeesWithSkill(ostream& stream, unsigned int skill_id);
+		void printAllEmployeesWithSkill(ostream& stream, unsigned int skill_id);
 
 	};
 

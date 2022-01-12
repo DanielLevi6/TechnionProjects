@@ -93,14 +93,4 @@ namespace mtm {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-#endif /*WORK_PLACE_H_*/#pragma once
+#endif /*WORK_PLACE_H_*/

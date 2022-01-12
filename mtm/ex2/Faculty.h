@@ -22,7 +22,6 @@ namespace mtm {
 
 	public:
 
-		template <class T>
 		Faculty(unsigned int faculty_id, Skill& acquired_skill, unsigned int added_points, T* condition) :faculty_id(faculty_id), condition(condition), acquired_skill(acquired_skill), added_points(added_points) {}
 
 		Faculty(const Faculty& to_copy) = default;
