@@ -30,12 +30,11 @@ namespace mtm {
 			}
 		}
 
-		if (/*new_manager->isHired() ||*/ new_manager->getSalary() > 0) {
+		if ( new_manager->getSalary() > 0) {
 			throw CanNotHireManager();
 		}
         new_manager->setSalary(this->managers_salaries);
 		this->managers.insert(new_manager);
-		//delete the hired flag?
 
 		return true;
 	}
@@ -45,6 +44,7 @@ namespace mtm {
 		for (Manager* manager_iter : managers) {
 			if (manager_iter->getId() == manager_id) {
 				manager_iter->removeEmployee(worker_id);
+				//update Fired employee salary?
 				return;
 			}
 		}

@@ -79,7 +79,7 @@ namespace mtm {
 						{
 							if (workplace_iter->getID() == workplace_id)
 							{
-							    if(employee_iter->getSalary()){
+							    if(manager_iter->employeeIsInManager(employee_id)){
 							        return;
 							    }
 								try{

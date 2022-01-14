@@ -14,8 +14,7 @@ add_executable(ex2 Skill.cpp Skill.h
 					Faculty.h 
 					WorkPlace.cpp WorkPlace.h 
 					Manager.cpp Manager.h
-		Test.cpp
-					 )
+        test.cpp)
 
 
 

@@ -45,9 +45,6 @@ namespace mtm {
         return false;
     }
 
-    bool Manager::isHired() const {
-        return hired;
-    }
 
     Manager *Manager::clone() const {
         return new Manager(*this);
@@ -87,9 +84,9 @@ namespace mtm {
         return stream;
     }
 
-    void Manager::fireAllEmployees() {
+    void Manager::fireAllEmployees(int salary) {
         for (Employee *employee_iter : employees) {
-            employee_iter->setSalary(-employee_iter->getSalary());
+            employee_iter->setSalary(-salary);
         }
         employees.clear();
     }

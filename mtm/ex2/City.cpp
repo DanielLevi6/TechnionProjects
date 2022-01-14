@@ -156,9 +156,9 @@ namespace mtm {
 					{
 						workplace_iter->fireManager(manager_id);
 						//zero his salary
-						manager_iter->setSalary(-manager_iter->getSalary());
+						manager_iter->setSalary(-workplace_iter->getManagersSalary());
 						//fire all his employees
-                        (*manager_iter).fireAllEmployees();
+                        (*manager_iter).fireAllEmployees(workplace_iter->getWorkersSalary());
                         
 						return;
 					}

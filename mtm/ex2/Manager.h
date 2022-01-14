@@ -19,15 +19,14 @@ namespace mtm {
 	class Manager : public Citizen {
 
 		int salary;
-		bool hired;
 		std::set<Employee*, EmployeeComp> employees;
 
 	public:
 
 		Manager(unsigned int id, std::string first_name, std::string last_name, unsigned int birth_year) :
-			Citizen(id, first_name, last_name, birth_year), salary(0), hired(false) { }
+			Citizen(id, first_name, last_name, birth_year), salary(0) { }
 
-		Manager(const Manager& to_copy) : Citizen(to_copy.getId(),to_copy.getFirstName(),to_copy.getLastName(),to_copy.getBirthYear()), salary(to_copy.salary), hired(to_copy.hired), employees(to_copy.employees)
+		Manager(const Manager& to_copy) : Citizen(to_copy.getId(),to_copy.getFirstName(),to_copy.getLastName(),to_copy.getBirthYear()), salary(to_copy.salary), employees(to_copy.employees)
 		{ }
 
 		~Manager() {}
@@ -42,8 +41,6 @@ namespace mtm {
 
 		bool checkIfEmployeeExist(Employee* new_employee) const;
 
-		bool isHired() const;
-
 		Manager* clone() const override;
 
 		bool operator==(Manager to_compare);
@@ -56,7 +53,7 @@ namespace mtm {
 
 		friend std::ostream& operator<<(std::ostream& stream, Manager& to_print);
 
-		void fireAllEmployees();
+		void fireAllEmployees(int salary);
 	};
 
 	std::ostream& operator<<(std::ostream& stream, Manager& to_print);
