@@ -155,8 +155,7 @@ namespace mtm {
 					if (workplace_iter->getID() == workplace_id)
 					{
 						workplace_iter->fireManager(manager_id);
-						//zero his salary
-						manager_iter->setSalary(-workplace_iter->getManagersSalary());
+
 						//fire all his employees
                         (*manager_iter).fireAllEmployees(workplace_iter->getWorkersSalary());
                         
