@@ -13,7 +13,7 @@ namespace mtm {
         employees.insert(new_employee);
     }
 
-    void Manager::removeEmployee(unsigned int id) {
+    void Manager::removeEmployee(int id) {
         if (!employeeIsInManager(id)) {
             throw EmployeeIsNotHired();
         }
@@ -27,7 +27,7 @@ namespace mtm {
 
     }
 
-    void Manager::setSalary(unsigned int added_salary) {
+    void Manager::setSalary(int added_salary) {
         this->salary += added_salary;
 
         if (this->salary < 0) {
@@ -54,7 +54,7 @@ namespace mtm {
         return this->getId() == to_compare.getId();
     }
 
-    bool Manager::employeeIsInManager(unsigned int employee_id) const //There iis a similar function
+    bool Manager::employeeIsInManager(int employee_id) const //There iis a similar function
     {
         for (Employee *employee_iter : employees) {
             if (employee_iter->getId() == employee_id) {

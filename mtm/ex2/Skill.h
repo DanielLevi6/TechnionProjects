@@ -1,7 +1,7 @@
 #ifndef EX2_SKILL_H
 #define EX2_SKILL_H
 
-#include "Exceptions.h"
+#include "exceptions.h"
 #include <iostream>
 #include <string>
 
@@ -20,16 +20,16 @@ namespace mtm {
     class Skill {
         int ID;
         string name;
-        unsigned int requiredPoints;
+        int requiredPoints;
 
     public:
-        /**
-         * Skill constructor:
-         * @param ID
-         * @param name
-         * @param requiredPoints
-         */
-        Skill(int ID, string name, unsigned int requiredPoints)
+    /**
+     * Skill constructor:
+     * @param ID
+     * @param name
+     * @param requiredPoints
+     */
+        Skill(int ID, string name, int requiredPoints)
                 : ID(ID), name(name), requiredPoints(requiredPoints) {}
         /**
          * Skill copy constructor:
@@ -54,7 +54,7 @@ namespace mtm {
          * return the Skill RequiredPoints.
          * @return Skill object's RequiredPoints
          */
-        unsigned int getRequiredPoints() const;
+        int getRequiredPoints() const;
         /**
          * operator<< overload
          * @format

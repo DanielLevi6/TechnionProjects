@@ -1,0 +1,13 @@
+add product apple 5.42 2
+change amount apple 3
+add product pear 1.84 5
+add product banana 2.405 1
+add product orage 1.84 5
+change amount banana 3
+change amount orage 3
+ship order apple, 1 -- banana, 20 -- banana, 2.5
+change amount orage -10
+change amount apple -100
+change amount banana 300
+ship order apple, 8 -- banna, 50
+ship order apple, 8 -- banana, 50

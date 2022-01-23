@@ -1,7 +1,7 @@
 #include "Employee.h"
 namespace mtm {
 //get Employee's salary
-    unsigned int Employee::getSalary() const {
+    int Employee::getSalary() const {
         return this->salary;
     }
 
@@ -41,7 +41,7 @@ namespace mtm {
     }
 
 
-    bool Employee::hasSkill(unsigned int ID) const {
+    bool Employee::hasSkill(int ID) const {
         for (set<Skill>::iterator i = skill.begin(); i != skill.end(); i++) {
             if (i->getId() == ID) {
                 return true;

@@ -4,8 +4,19 @@
 
 namespace mtm {
 
+	City::~City(){
+		for (Manager* m_iter : managers) {
+			delete m_iter;
+		}
+		for (Employee* e_iter : employees) {
+			delete e_iter;
+		}
+		for (Workplace* w_iter : Workplaces) {
+			delete w_iter;
+		}
+	}
 
-	void City::addEmployee(unsigned int ID, string firstName, string lastName, unsigned int birthYear)
+	void City::addEmployee(int ID, string firstName, string lastName, int birthYear)
 	{
 		for (Employee* iter : employees) {
 			if ((*iter).getId() == ID) {
@@ -21,7 +32,7 @@ namespace mtm {
 		employees.insert(new Employee(ID, firstName, lastName, birthYear));
 	}
 
-	void City::addManager(unsigned int ID, string firstName, string lastName, unsigned int birthYear)
+	void City::addManager(int ID, string firstName, string lastName, int birthYear)
 	{
 	    /**why new manager? never accessed*/
 		//Manager* new_manager = new Manager(ID, firstName, lastName, birthYear);
@@ -39,7 +50,7 @@ namespace mtm {
 	}
 
 	//Need to be changed to a generic condition
-	void City::addFaculty(unsigned int faculty_id, Skill& acquired_skill, unsigned int added_points, Condition* condition)
+	void City::addFaculty(int faculty_id, Skill& acquired_skill, int added_points, Condition* condition)
 	{
 		for (const Faculty<Condition>& iter : faculties) {
 			if (iter.getId() == faculty_id) {
@@ -50,18 +61,18 @@ namespace mtm {
 		faculties.insert(Faculty<Condition>(faculty_id,acquired_skill,added_points, condition));
 	}
 
-	void City::createWorkplace(unsigned int workplace_id, std::string workplace_name, unsigned int workers_salaries, unsigned int managers_salaries)
+	void City::createWorkplace(int Workplace_id, std::string Workplace_name, int workers_salaries, int managers_salaries)
 	{
-		for (WorkPlace* iter : workplaces) {
-			if (iter->getID() == workplace_id) {
+		for (Workplace* iter : Workplaces) {
+			if (iter->getID() == Workplace_id) {
 				throw WorkplaceAlreadyExists();
 			}
 		}
 
-		workplaces.insert(new WorkPlace(workplace_id, workplace_name, workers_salaries, managers_salaries));
+		Workplaces.insert(new Workplace(Workplace_id, Workplace_name, workers_salaries, managers_salaries));
 	}
 
-	void City::teachAtFaculty(unsigned int employee_id, unsigned int faculty_id)
+	void City::teachAtFaculty(int employee_id, int faculty_id)
 	{
 		for (Employee* employee_iter : employees) {
 			if (employee_iter->getId() == employee_id) {
@@ -80,19 +91,19 @@ namespace mtm {
 		throw EmployeeDoesNotExist();
 	}
 
-	void City::hireManagerAtWorkplace(unsigned int manager_id, unsigned int workplace_id)
+	void City::hireManagerAtWorkplace(int manager_id, int Workplace_id)
 	{
 		for (Manager* manager_iter : managers)
 		{
 			if (manager_iter->getId() == manager_id)
 			{
-				for (WorkPlace* workplace_iter : workplaces)
+				for (Workplace* Workplace_iter : Workplaces)
 				{
-					if (workplace_iter->getID() == workplace_id)
+					if (Workplace_iter->getID() == Workplace_id)
 					{
 
                         try{
-                            workplace_iter->hireManager(manager_iter);
+                            Workplace_iter->hireManager(manager_iter);
                         }
                         catch(ManagerAlreadyHired&){
                             ManagerAlreadyExists();
@@ -111,7 +122,7 @@ namespace mtm {
 		throw ManagerDoesNotExist();
 	}
 
-	void City::fireEmployeeAtWorkplace(unsigned int employee_id, unsigned int manager_id, unsigned int workplace_id)
+	void City::fireEmployeeAtWorkplace(int employee_id, int manager_id, int Workplace_id)
 	{
 		for (Employee* employee_iter : employees)
 		{
@@ -121,11 +132,11 @@ namespace mtm {
 				{
 					if (manager_iter->getId() == manager_id)
 					{
-						for (WorkPlace* workplace_iter : workplaces)
+						for (Workplace* Workplace_iter : Workplaces)
 						{
-							if (workplace_iter->getID() == workplace_id)
+							if (Workplace_iter->getID() == Workplace_id)
 							{
-								workplace_iter->fireEmployee(employee_id, manager_id);
+								Workplace_iter->fireEmployee(employee_id, manager_id);
 
 								//zero fired employee salary
                                 employee_iter->setSalary(-employee_iter->getSalary());
@@ -144,20 +155,20 @@ namespace mtm {
 		throw EmployeeDoesNotExist();
 	}
 
-	void City::fireManagerAtWorkplace(unsigned int manager_id, unsigned int workplace_id)
+	void City::fireManagerAtWorkplace(int manager_id, int Workplace_id)
 	{
 		for (Manager* manager_iter : managers)
 		{
 			if (manager_iter->getId() == manager_id)
 			{
-				for (WorkPlace* workplace_iter : workplaces)
+				for (Workplace* Workplace_iter : Workplaces)
 				{
-					if (workplace_iter->getID() == workplace_id)
+					if (Workplace_iter->getID() == Workplace_id)
 					{
-						workplace_iter->fireManager(manager_id);
+						Workplace_iter->fireManager(manager_id);
 
 						//fire all his employees
-                        (*manager_iter).fireAllEmployees(workplace_iter->getWorkersSalary());
+                        (*manager_iter).fireAllEmployees(Workplace_iter->getWorkersSalary());
                         
 						return;
 					}
@@ -171,7 +182,7 @@ namespace mtm {
 	}
 
 
-	int City::getAllAboveSalary(ostream& stream, unsigned int min_salary)
+	int City::getAllAboveSalary(ostream& stream, int min_salary)
 	{
 		set<Manager*, ManagerComp>::iterator manager_iter = managers.begin();
 		set<Employee*, EmployeeComp>::iterator employee_iter = employees.begin();
@@ -180,7 +191,7 @@ namespace mtm {
 
 		while (manager_iter!=managers.end() || employee_iter!=employees.end())
 		{
-			if (/*if iterator is nullptr??*/employee_iter == employees.end() || manager_iter != managers.end() && (*manager_iter)->getId() < (*employee_iter)->getId())
+			if (/*if iterator is nullptr??*/employee_iter == employees.end() || (manager_iter != managers.end() && (*manager_iter)->getId() < (*employee_iter)->getId()))
 			{
 				if ((*manager_iter)->getSalary() >= min_salary)
 				{
@@ -203,7 +214,7 @@ namespace mtm {
 		return counter;
 	}
 
-	bool City::isWorkingInTheSameWorkplace(unsigned int employee1_id, unsigned int employee2_id)
+	bool City::isWorkingInTheSameWorkplace(int employee1_id, int employee2_id)
 	{
 		bool employee1_exist = false;
 		bool employee2_exist = false;
@@ -225,21 +236,21 @@ namespace mtm {
 			throw EmployeeDoesNotExist();
 		}
 
-		bool employee1_in_workplace = false;
-		bool employee2_in_workplace = false;
+		bool employee1_in_Workplace = false;
+		bool employee2_in_Workplace = false;
 
-		for (WorkPlace* workplace_iter : workplaces)
+		for (Workplace* Workplace_iter : Workplaces)
 		{
-			employee1_in_workplace = workplace_iter->employeeIsInWorkplace(employee1_id);
-			employee2_in_workplace = workplace_iter->employeeIsInWorkplace(employee2_id);
+			employee1_in_Workplace = Workplace_iter->employeeIsInWorkplace(employee1_id);
+			employee2_in_Workplace = Workplace_iter->employeeIsInWorkplace(employee2_id);
 
-			if (employee1_in_workplace && employee2_in_workplace)
+			if (employee1_in_Workplace && employee2_in_Workplace)
 			{
 				return true;
 			}
 
-			employee1_in_workplace = false;
-			employee2_in_workplace = false;
+			employee1_in_Workplace = false;
+			employee2_in_Workplace = false;
 
 		}
 
@@ -247,7 +258,7 @@ namespace mtm {
 
 	}
 
-	void City::printAllEmployeesWithSkill(ostream& stream, unsigned int skill_id)
+	void City::printAllEmployeesWithSkill(ostream& stream, int skill_id)
 	{
 		for (Employee* employee_iter : employees)
 		{
