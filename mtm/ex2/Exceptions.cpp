@@ -1,4 +1,5 @@
 #include "exceptions.h"
+#include "exceptions.h"
 
 namespace mtm {
 
@@ -84,4 +85,9 @@ namespace mtm {
     const string WorkplaceDoesNotExist::what() {
         return string("WorkplaceDoesNotExist");
     }
+
+    const string CitizenAlreadyExists::what() {
+        return string("CitizenAlreadyExists");
+    }
+
 }

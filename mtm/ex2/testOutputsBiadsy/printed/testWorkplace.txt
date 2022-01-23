@@ -8,10 +8,10 @@ Workplace name - Meta Groups:
 Manager Robert stark
 id - 1 birth_year - 1980
 Salary: 20000
-Employees:
-Alex Martinez
-Salary: 10000 Score: 0
+Employees: 
 John Williams
+Salary: 10000 Score: 0
+Alex Martinez
 Salary: 10000 Score: 0
 
 print_with_two_groups
@@ -19,86 +19,32 @@ Workplace name - Meta Groups:
 Manager Robert stark
 id - 1 birth_year - 1980
 Salary: 20000
-Employees:
-Alex Martinez
-Salary: 10000 Score: 0
+Employees: 
 John Williams
+Salary: 10000 Score: 0
+Alex Martinez
 Salary: 10000 Score: 0
 Manager omar sharafy
 id - 6 birth_year - 1990
 Salary: 20000
-Employees:
+Employees: 
 Muhammad Ghanayem
 Salary: 10000 Score: 20
 
-print_with_two_groups_operator_=
+print_with_two_groups_check_if_the_original_modified
 Workplace name - Meta Groups:
 Manager Robert stark
 id - 1 birth_year - 1980
 Salary: 20000
-Employees:
-Alex Martinez
-Salary: 10000 Score: 0
+Employees: 
 John Williams
+Salary: 10000 Score: 0
+Alex Martinez
 Salary: 10000 Score: 0
 Manager omar sharafy
 id - 6 birth_year - 1990
 Salary: 20000
-Employees:
-Muhammad Ghanayem
-Salary: 10000 Score: 20
-
-print_with_two_groups_copy_constructor
-Workplace name - Meta Groups:
-Manager Robert stark
-id - 1 birth_year - 1980
-Salary: 20000
-Employees:
-Alex Martinez
-Salary: 10000 Score: 0
-John Williams
-Salary: 10000 Score: 0
-Manager omar sharafy
-id - 6 birth_year - 1990
-Salary: 20000
-Employees:
-Muhammad Ghanayem
-Salary: 10000 Score: 20
-
-print_with_two_groups_operator_=_after_delete_group_of_Robert_Stark
-Workplace name - Meta Groups:
-Manager omar sharafy
-id - 6 birth_year - 1990
-Salary: 20000
-Employees:
-Muhammad Ghanayem
-Salary: 10000 Score: 20
-
-print_with_two_groups_copy_constructor_after_delete_group_of_Omar_Sharafy
-Workplace name - Meta Groups:
-Manager Robert stark
-id - 1 birth_year - 1980
-Salary: 20000
-Employees:
-Alex Martinez
-Salary: 10000 Score: 0
-John Williams
-Salary: 10000 Score: 0
-
-print_with_two_groups_check_if_the_original_is_not_modified
-Workplace name - Meta Groups:
-Manager Robert stark
-id - 1 birth_year - 1980
-Salary: 20000
-Employees:
-Alex Martinez
-Salary: 10000 Score: 0
-John Williams
-Salary: 10000 Score: 0
-Manager omar sharafy
-id - 6 birth_year - 1990
-Salary: 20000
-Employees:
+Employees: 
 Muhammad Ghanayem
 Salary: 10000 Score: 20
 
@@ -107,7 +53,7 @@ Workplace name - Meta Groups:
 Manager omar sharafy
 id - 6 birth_year - 1990
 Salary: 20000
-Employees:
+Employees: 
 Muhammad Ghanayem
 Salary: 10000 Score: 20
 
@@ -116,3 +62,29 @@ Workplace name - Meta
 
 ManagerIsNotHired_after_delete_manager
 ManagerIsNotHired
+print_after_delete_all_groups_and_add_second_group_again
+Workplace name - Meta Groups:
+Manager omar sharafy
+id - 6 birth_year - 1990
+Salary: 20000
+Employees: 
+Muhammad Ghanayem
+Salary: 10000 Score: 20
+
+print_after_delete_all_groups_and_add_two_groups_again
+Workplace name - Meta Groups:
+Manager Robert stark
+id - 1 birth_year - 1980
+Salary: 20000
+Employees: 
+John Williams
+Salary: 10000 Score: 0
+Alex Martinez
+Salary: 10000 Score: 0
+Manager omar sharafy
+id - 6 birth_year - 1990
+Salary: 20000
+Employees: 
+Muhammad Ghanayem
+Salary: 10000 Score: 20
+

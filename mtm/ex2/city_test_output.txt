@@ -1,4 +1,4 @@
-getAllAboveSalary output:
+getAllAboveSalary output: 
 John Williams
 Salary: 10000 Score: 25
 Lionel Smith
@@ -13,7 +13,7 @@ Alex Martinez
 Salary: 0 Score: 10
 Lionel Smith
 Salary: 10000 Score: 10
-getAllAboveSalary output:
+getAllAboveSalary output: 
 
 printAllEmployeesWithSkill output
 John Williams

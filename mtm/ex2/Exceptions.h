@@ -148,6 +148,13 @@ namespace mtm {
 
         const std::string what();
     };
+
+    class CitizenAlreadyExists : public Exception {
+    public:
+        CitizenAlreadyExists() = default;
+
+        const std::string what();
+    };
 }
 
 #endif /* EXCEPTIONS_H */

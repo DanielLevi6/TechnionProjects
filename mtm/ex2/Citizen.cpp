@@ -2,7 +2,7 @@
 
 namespace mtm {
 
-    unsigned int Citizen::getId() const {
+    int Citizen::getId() const {
         return this->ID;
     }
 
@@ -14,7 +14,7 @@ namespace mtm {
         return this->lastName;
     }
 
-    unsigned int Citizen::getBirthYear() const {
+    int Citizen::getBirthYear() const {
         return this->birthYear;
     }
 

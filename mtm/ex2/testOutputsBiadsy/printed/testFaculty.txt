@@ -5,9 +5,25 @@ EmployeeNotAccepted
 Print_Long
 Muhammad Ghanayem
 id - 90 birth_year - 1890
-Salary: 0 Score: 0 Skills:
+Salary: 0 Score: 0
 Print_Long_after_skill_teach
 Muhammad Ghanayem
 id - 90 birth_year - 1890
-Salary: 0 Score: 5 Skills:
+Salary: 0 Score: 5 Skills: 
+Programming with c++
+Print_Long_e3_after_skill9_teach
+Muhammad Ghanayem
+id - 90 birth_year - 1890
+Salary: 9 Score: 85 Skills: 
+Programming with c++
+TEST_FACULTY_WITHOUT_CLASS_Condition
+Print_Long_e90_after_copy_faculty1_teach_operator_=
+Fares Moshe
+id - 35 birth_year - 8000
+Salary: 0 Score: 10 Skills: 
+Programming with c++
+Print_Long_e91_after_copy_constructor_faculty1_teach_copy_constructor
+Dani Amos
+id - 8888 birth_year - 8000
+Salary: 0 Score: 10 Skills: 
 Programming with c++

@@ -1,7 +1,7 @@
 #include "Employee.h"
 namespace mtm {
 //get Employee's salary
-    unsigned int Employee::getSalary() const {
+    int Employee::getSalary() const {
         return this->salary;
     }
 
@@ -41,7 +41,7 @@ namespace mtm {
     }
 
 
-    bool Employee::hasSkill(unsigned int ID) const {
+    bool Employee::hasSkill(int ID) const {
         for (set<Skill>::iterator i = skill.begin(); i != skill.end(); i++) {
             if (i->getId() == ID) {
                 return true;
@@ -75,12 +75,20 @@ namespace mtm {
     }
 
     ostream &Employee::printLong(ostream &os = cout) const {
-        os << getFirstName() << " " << getLastName() << endl << 
-           "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
-           "Salary: " << getSalary() << " Score: " << getScore() <<
-           " Skills:" << endl;
-        for (const auto & s : skill) {
-            os << s.getName() << endl;
+
+        if (this->skill.empty()){
+            os << getFirstName() << " " << getLastName() << endl <<
+               "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
+               "Salary: " << getSalary() << " Score: " << getScore() << endl;
+        }
+        else {
+            os << getFirstName() << " " << getLastName() << endl <<
+               "id - " << getId() << " birth_year - " << getBirthYear() << endl <<
+               "Salary: " << getSalary() << " Score: " << getScore() <<
+               " Skills: "<< endl;
+            for (const auto &s : skill) {
+                os << s.getName() << endl;
+            }
         }
         return os;
     }

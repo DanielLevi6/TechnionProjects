@@ -7,7 +7,7 @@ Long Print
 Robert stark
 id - 1 birth_year - 1980
 Salary: 0
-Employees:
+Employees: 
 John Williams
 Salary: 0 Score: 0
 Alex Martinez
@@ -19,45 +19,25 @@ Long Print after clone
 Robert stark
 id - 1 birth_year - 1980
 Salary: 0
-Employees:
+Employees: 
 John Williams
 Salary: 0 Score: 0
 Alex Martinez
 Salary: 0 Score: 0
 EmployeeIsNotHired_after_delete
-test_operator_=
+check_if_the_original_modified
 Robert stark
 id - 1 birth_year - 1980
 Salary: 55
-Employees:
-Alex Martinez
-Salary: 0 Score: 0
-test_copy_constructor
-Robert stark
-id - 1 birth_year - 1980
-Salary: 55
-Employees:
-Alex Martinez
-Salary: 0 Score: 0
-test_copy_constructor_after_add_employee
-Robert stark
-id - 1 birth_year - 1980
-Salary: 55
-Employees:
-John Williams
-Salary: 0 Score: 0
-Alex Martinez
-Salary: 0 Score: 0
-check_if_the_original_is_not_modified
-Robert stark
-id - 1 birth_year - 1980
-Salary: 55
-Employees:
+Employees: 
 Alex Martinez
 Salary: 0 Score: 0
 Robert stark
 id - 1 birth_year - 1980
 Salary: 55
-Employees:
+Employees: 
 Alex Martinez
-Salary: 0 Score: 0
+Salary: 0 Score: 50
+Robert stark
+id - 1 birth_year - 1980
+Salary: 55
